@@ -45,7 +45,7 @@ public class JwtAccessAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        Authentication authResult = null;
+        /*Authentication authResult = null;
         AuthenticationException failed = null;
         try {
             //从头中获取token并封装后提交给AuthenticationManager
@@ -71,7 +71,7 @@ public class JwtAccessAuthenticationFilter extends OncePerRequestFilter {
             //token认证失败，并且这个request不在例外列表里，才会返回错误
             unsuccessfulAuthentication(request, response, failed);
             return;
-        }
+        }*/
         filterChain.doFilter(request, response);
     }
 
@@ -80,12 +80,12 @@ public class JwtAccessAuthenticationFilter extends OncePerRequestFilter {
     }
 
     protected boolean permissiveRequest(HttpServletRequest request) {
-        if(permissiveRequestMatchers == null)
+        /*if(permissiveRequestMatchers == null)
             return false;
         for(RequestMatcher permissiveMatcher : permissiveRequestMatchers) {
             if(permissiveMatcher.matches(request))
                 return true;
-        }
+        }*/
         return false;
     }
 
