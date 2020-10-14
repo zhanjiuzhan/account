@@ -2,7 +2,7 @@ package org.account.cl.permissions;
 
 import com.alibaba.fastjson.JSON;
 import org.account.cl.permissions.impl.TokenServiceImpl;
-import org.account.cl.view.model.JsonRes;
+import org.account.cl.view.product.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 权限控制配置 用户扩展配置
@@ -109,11 +110,11 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 String token = tokenService.generateToken(jwtUser.getUsername());
                 // 返回创建成功的token
-                JsonRes jsonRes = new JsonRes();
-                jsonRes.setStatus(200);
+                JsonView.JsonRet jsonRes = new JsonView.JsonRet();
+                jsonRes.setCode(200);
                 jsonRes.setData(token);
                 String res = JSON.toJSONString(jsonRes);
-                response.setContentLength(res.getBytes("UTF-8").length);
+                response.setContentLength(res.getBytes(StandardCharsets.UTF_8).length);
                 Writer out = response.getWriter();
                 out.write(res);
                 out.flush();
@@ -134,11 +135,11 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
              */
             @Override
             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-                JsonRes jsonRes = new JsonRes();
-                jsonRes.setStatus(403);
+                JsonView.JsonRet jsonRes = new JsonView.JsonRet();
+                jsonRes.setCode(403);
                 jsonRes.setMsg(e.getMessage());
                 String res = JSON.toJSONString(jsonRes);
-                response.setContentLength(res.getBytes("UTF-8").length);
+                response.setContentLength(res.getBytes(StandardCharsets.UTF_8).length);
                 Writer out = response.getWriter();
                 out.write(res);
                 out.flush();

@@ -1,8 +1,8 @@
 package org.account.cl.controller;
 
 import org.account.cl.exception.MySelfException;
-import org.account.cl.view.JcJsonView;
-import org.account.cl.view.model.JsonRes;
+import org.account.cl.view.product.JsonView;
+import org.account.cl.view.product.RetUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,8 +27,8 @@ public class ExceptionController {
      * @return 异常结果
      */
     @ExceptionHandler(value = MySelfException.class)
-    public JcJsonView handleMySelfException(MySelfException ex) {
-        JsonRes res = new JsonRes();
+    public JsonView handleMySelfException(MySelfException ex) {
+        JsonView.JsonRet res = new JsonView.JsonRet();
         switch (ex.getExceptionEnum()) {
             case INVALID_PARAMETER:
                 return exeInvalidParameterException(res, ex);
@@ -36,22 +36,22 @@ public class ExceptionController {
                 return exeInternalInvalidParameterException(res, ex);
             default:
                 logger.error("未知类型异常");
-                return new JcJsonView(500);
+                return new JsonView(500);
         }
     }
 
-    private JcJsonView exeInvalidParameterException(JsonRes res, MySelfException ex) {
-        res.setStatus(ex.getCode());
+    private JsonView exeInvalidParameterException(JsonView.JsonRet res, MySelfException ex) {
+        res.setCode(ex.getCode());
         res.setMsg(ex.getMessage());
         logger.error("外部调用接口传递参数异常: " + ex.getMessage());
-        return new JcJsonView(res);
+        return new JsonView(res);
     }
 
-    private JcJsonView exeInternalInvalidParameterException(JsonRes res, MySelfException ex) {
-        res.setStatus(ex.getCode());
-        res.setMsg(JcJsonView.ERROR_MSG);
+    private JsonView exeInternalInvalidParameterException(JsonView.JsonRet res, MySelfException ex) {
+        res.setCode(ex.getCode());
+        res.setMsg(RetUtils.ERROR_MSG);
         logger.error("内部调用接口传递参数异常: " + ex.getMessage());
         ex.printStackTrace();
-        return new JcJsonView(res);
+        return new JsonView(res);
     }
 }

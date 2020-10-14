@@ -1,4 +1,4 @@
-package org.account.cl.view.resolver;
+package org.account.cl.view.product;
 
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 
@@ -7,13 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * @author Administrator
+ * @author chenglei
  */
 public abstract class JcAbstractViewResolver extends AbstractUrlBasedView {
 
     @Override
-    protected void renderMergedOutputModel(Map<String, Object> map,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void renderMergedOutputModel(Map<String, Object> map, HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType(getContentSpType());
         // TODO xss攻击过滤
         makeResponse(response);

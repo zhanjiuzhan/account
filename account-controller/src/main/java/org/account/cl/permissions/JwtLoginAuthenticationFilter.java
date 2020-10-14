@@ -35,7 +35,7 @@ public class JwtLoginAuthenticationFilter extends AbstractAuthenticationProcessi
     }
 
     /**
-     * 从请求中获取到登录的信息 做成认证对象
+     * 从请求中获取到登录的信息 做成认证对象 通过json的方式进行登录
      * @param request
      * @param response
      * @return
