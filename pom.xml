@@ -12,8 +12,9 @@
         <module>account-model</module>
         <module>account-dao</module>
         <module>account-service</module>
-        <module>account-controller</module>
+        <module>account-user</module>
         <module>account-utils</module>
+        <module>account-admin</module>
     </modules>
 
     <!--
