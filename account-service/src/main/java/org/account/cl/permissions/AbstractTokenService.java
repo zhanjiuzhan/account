@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * 关于token的一些操作
@@ -29,19 +30,13 @@ public abstract class AbstractTokenService {
 
     /**
      * 是否权限校验能够通过
-     * @param authHeader
      * @return
      */
-    public boolean isAuthentication(HttpServletRequest request, String authHeader) {
-        boolean isAuthentication = false;
-        String username = getUsernameByHeader(authHeader);
-        if (username != null) {
-            // 用户信息或者角色信息是否能匹配上
-            if (isAuthenticationUrl(request, username)) {
-                isAuthentication = true;
-            }
-        }
-        return isAuthentication;
+    public boolean isAuthentication(final HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(getTokenHeader()))
+            .map(this::getUsernameByHeader)
+            .map(username->isAuthenticationUrl(request, username))
+            .orElse(false);
     }
 
     /**
@@ -83,7 +78,7 @@ public abstract class AbstractTokenService {
      * @return 用户名 没有的时候为""
      * @throws AuthenticationException
      */
-    public String getUsernameByHeader(String authHeader) {
+    private String getUsernameByHeader(String authHeader) {
         ExceptionEnum.INTERNAL_INVALID_PARAMETER.assertNotNull(authHeader,"AbstractTokenService:getUsernameByHeader", "authHeader", authHeader);
 
         // authHeader
@@ -97,7 +92,7 @@ public abstract class AbstractTokenService {
             logger.error(e.toString());
         }
         if (claims == null || TokenUtils.isTokenExpired(claims.getExpiration())) {
-            return "";
+            return null;
         }
         return claims.getSubject();
     }

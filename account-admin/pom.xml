@@ -11,5 +11,12 @@
 
     <artifactId>account-admin</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.account.cl</groupId>
+            <artifactId>account-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

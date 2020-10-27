@@ -27,26 +27,26 @@ public class TokenServiceImpl extends AbstractTokenService implements Environmen
 
     @Override
     public boolean isAuthenticationUrl(HttpServletRequest request, String username) {
-        return false;
+        return true;
     }
 
     @Override
-    public String getKey() {
+    protected String getKey() {
         return environment.getProperty("spring.token.key", DEFAULT_KEY);
     }
 
     @Override
-    public long getExpire() {
+    protected long getExpire() {
         return Long.valueOf(environment.getProperty("spring.token.expire", DEFAULT_EXPIRE + ""));
     }
 
     @Override
-    public String getTokenHeader() {
+    protected String getTokenHeader() {
         return environment.getProperty("spring.token.header", DEFAULT_TOKEN_HEADER);
     }
 
     @Override
-    public String getTokenPrefix() {
+    protected String getTokenPrefix() {
         return environment.getProperty("spring.token.header.prefix", DEFAULT_TOKEN_PREFIX);
     }
 
