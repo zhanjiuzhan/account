@@ -23,7 +23,7 @@ public class UserController {
 
 
     @GetMapping("/get.do")
-    public JsonView getUser() {
-        return JsonRetFactory.getRet(userDaoMysqlImpl.getUserByUsername("dw_chenglei"));
+    public JsonView getUser(String username) {
+        return JsonRetFactory.getRet(userDaoMysqlImpl.getUserByUsername(username));
     }
 }
