@@ -291,7 +291,7 @@ final public class JcSecurityUtils {
      * @param privateKey RSA 私钥 if null then getPrivateKey()
      * @return 解密后的明文
      */
-    public static String decryptByPrivate(String content,PrivateKey privateKey){
+    public static String decryptByPrivate(String content, PrivateKey privateKey){
         if (privateKey == null){
             privateKey = getPrivateKey();
         }
@@ -328,7 +328,7 @@ final public class JcSecurityUtils {
      * @param publicKey RSA 公钥 if null then getPublicKey()
      * @return 解密后的明文
      */
-    public static String decryptByPublic(String content,PublicKey publicKey){
+    public static String decryptByPublic(String content, PublicKey publicKey){
         if (publicKey == null){
             publicKey = getPublicKey();
         }
