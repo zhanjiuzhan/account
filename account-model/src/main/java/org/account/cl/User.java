@@ -1,5 +1,7 @@
 package org.account.cl;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 用户信息
  * @author Administrator
@@ -13,6 +15,7 @@ public class User  {
     /**
      * 用户凭证
      */
+    @JSONField(serialize=false)
     private String password;
 
     /**
@@ -55,6 +58,13 @@ public class User  {
         this.credentialsExpired = 0;
         this.createDate = JcDateUtils.getToDay();
         this.updateDate = JcDateUtils.getToDay();
+    }
+
+    public User() {}
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -125,7 +135,6 @@ public class User  {
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", isEnable=" + isEnable +
                 ", locked=" + locked +
                 ", expired=" + expired +

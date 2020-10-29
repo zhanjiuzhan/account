@@ -32,7 +32,7 @@ public class AdminJwtAccessFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             response.setContentType(RetUtils.CONTENT_TYPE_JSON);
-            String res = JSON.toJSONString(new JsonView.JsonRet("用户没有权限!"));
+            String res = JSON.toJSONString(new JsonView.JsonRet(403, "用户没有权限！"));
             try (Writer out = response.getWriter();) {
                 response.setContentLength(res.getBytes(RetUtils.CHARACTER_CODE).length);
                 out.write(res);

@@ -13,15 +13,18 @@ import javax.annotation.Resource;
 public class UserDaoCacheImpl implements UserDao {
 
     @Resource
-    private UserDao userDaoMysqlImpl;
+    private UserDao userDaoMysqlMasterImpl;
+
+    @Resource
+    private UserDao userDaoMysqlSlaveImpl;
 
     @Override
     public boolean addUser(User user) {
-        return userDaoMysqlImpl.addUser(user);
+        return userDaoMysqlMasterImpl.addUser(user);
     }
 
     @Override
     public User getUserByUsername(String username) {
-        return userDaoMysqlImpl.getUserByUsername(username);
+        return userDaoMysqlSlaveImpl.getUserByUsername(username);
     }
 }

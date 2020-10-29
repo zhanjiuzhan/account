@@ -1,9 +1,5 @@
 package org.account.cl;
 
-import org.account.cl.condition.UserQuery;
-
-import java.util.List;
-
 /**
  * 基础用户信息
  * @author Administrator

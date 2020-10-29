@@ -20,4 +20,11 @@ public interface UserService {
      * @return
      */
     User getUserByUsername(String username);
+
+    /**
+     * 取得一个解密的密码 从前端
+     * @param encodePassword
+     * @return
+     */
+    String getDecodePassword(String encodePassword);
 }

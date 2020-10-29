@@ -15,6 +15,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * @author Administrator
@@ -423,6 +424,11 @@ final public class JcSecurityUtils {
         return result;
     }
 
+    public static boolean isBase64(String str) {
+        String base64Pattern = "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";
+        return Pattern.matches(base64Pattern, str);
+    }
+
     /**
      * 将char转换为byte
      * @param c char
@@ -431,7 +437,6 @@ final public class JcSecurityUtils {
     private static byte toByte(char c){
         return (byte)"0123456789ABCDEF".indexOf(c);
     }
-
 
     public static void main(String[] args) {
         String s = "test10213asd";
