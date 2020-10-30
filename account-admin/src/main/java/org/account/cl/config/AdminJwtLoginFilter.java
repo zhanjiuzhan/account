@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.account.cl.JcStringUtils;
 import org.account.cl.User;
+import org.account.cl.UserDao;
 import org.account.cl.permissions.UserService;
 import org.account.cl.permissions.impl.TokenServiceImpl;
 import org.account.cl.view.product.JsonView;
@@ -31,6 +32,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
 
     private final static String LOGIN_URL = "/admin/login.do";
     private final static String REQUEST_TYPE = "POST";
+    private final static int LOGIN_NUM = 3;
 
     @Autowired
     private UserService userService;
@@ -72,6 +74,13 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
                         password = "";
                     }
 
+                    // 用户是否多次输入有误
+                    long num = userService.loginNum(username, UserDao.USER_OP.GET);
+                    if (num >= LOGIN_NUM) {
+                        sendMsg(new JsonView.JsonRet(401, "用户名密码错误数大于" + LOGIN_NUM + ", 请一小时后再试！"), response);
+                        break end;
+                    }
+
                     // 进行用户身份认证 用户名和密码去掉首尾空格
                     if (attachUser(username.trim(), password.trim())) {
                         successHandler(username, response);
@@ -80,7 +89,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
                 }
             // 参数信息错误
             } catch (Exception ignored) {}
-            failureHandler(response);
+            sendMsg(new JsonView.JsonRet(401, "认证失败，用户名或密码有误！"), response);
         } else {
             // 其它请求放行
             filterChain.doFilter(request, response);
@@ -93,7 +102,12 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
         // 从数据库中取得user信息
         User user = userService.getUserByUsername(username);
         // 进行密码校验
-        return user != null && passwordEncoder.matches(original, user.getPassword());
+        boolean flag = user != null && passwordEncoder.matches(original, user.getPassword());
+        if (!flag) {
+            // 输入密码有误 操作数添加
+            userService.loginNum(username, UserDao.USER_OP.ADD);
+        }
+        return flag;
     }
 
     /**
@@ -104,14 +118,6 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
     private void successHandler(String username, HttpServletResponse response) {
         String token = tokenService.generateToken(username);
         sendMsg(new JsonView.JsonRet(token), response);
-    }
-
-    /**
-     * 登陆认证失败的处理
-     * @param response
-     */
-    private void failureHandler(HttpServletResponse response) {
-        sendMsg(new JsonView.JsonRet(401, "认证失败，用户名或密码有误！"), response);
     }
 
     private void sendMsg(JsonView.JsonRet jsonRet, HttpServletResponse response) {
@@ -126,5 +132,4 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
             e.printStackTrace();
         }
     }
-
 }

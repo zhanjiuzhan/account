@@ -1,7 +1,6 @@
 package org.account.cl.impl.mysql.master;
 
 import org.account.cl.User;
-import org.account.cl.UserDao;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Administrator
  */
 @Mapper
-public interface UserDaoMysqlMasterImpl extends UserDao {
+public interface UserDaoMysqlMasterImpl {
 
     String USER_TAB = "user";
 
@@ -19,7 +18,6 @@ public interface UserDaoMysqlMasterImpl extends UserDao {
      * @param user
      * @return
      */
-    @Override
     @Insert("insert into " + USER_TAB + " (username, password, isEnable, expired, locked, credentials_expired, update_date, create_date) values " +
             "(#{username}, #{password}, #{isEnable}, #{expired}, #{locked}, #{credentialsExpired}, now(), now())")
     boolean addUser(User user);

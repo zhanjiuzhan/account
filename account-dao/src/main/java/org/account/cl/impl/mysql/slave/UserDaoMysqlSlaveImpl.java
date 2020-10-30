@@ -1,7 +1,6 @@
 package org.account.cl.impl.mysql.slave;
 
 import org.account.cl.User;
-import org.account.cl.UserDao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -10,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
  * @author Administrator
  */
 @Mapper
-public interface UserDaoMysqlSlaveImpl extends UserDao {
+public interface UserDaoMysqlSlaveImpl {
 
     String USER_TAB = "user";
 
@@ -19,7 +18,6 @@ public interface UserDaoMysqlSlaveImpl extends UserDao {
      * @param username
      * @return
      */
-    @Override
     @Select("select * from " + USER_TAB + " where username = #{username}")
     User getUserByUsername(String username);
 }

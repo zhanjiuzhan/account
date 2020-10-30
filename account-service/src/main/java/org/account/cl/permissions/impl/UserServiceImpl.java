@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public long loginNum(String username, UserDao.USER_OP op) {
+        return userDaoCacheImpl.loginNum(username, op);
+    }
+
     /**
      * 将密码变成数据库中存储的形式
      * @param password
@@ -112,6 +117,6 @@ public class UserServiceImpl implements UserService {
             System.out.println("保存在数据库中的是: " + dbPassowrd);
         }
 
-        System.out.println(obj.getWebPassword("abc123"));
+        System.out.println(obj.getWebPassword("abc1232"));
     }
 }

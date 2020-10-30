@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 保持乐观
  * @author Administrator
  */
 public class RedisUtils<K, V> {
@@ -23,8 +24,16 @@ public class RedisUtils<K, V> {
         this.redisTemplate = redisTemplate;
     }
 
+    public boolean del(K k) {
+        return redisTemplate.delete(k);
+    }
+
     public void expire(K k, int second) {
         this.redisTemplate.expire(k, second, TimeUnit.SECONDS);
+    }
+
+    public long incr(K key) {
+        return getStringObj().increment(key, 1L);
     }
 
     public boolean set(K key, V value) {
