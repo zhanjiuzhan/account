@@ -57,6 +57,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 登陆请求处理
         end: if (LOGIN_URL.equals(request.getRequestURI()) && REQUEST_TYPE.equals(request.getMethod())) {
+            String username = "";
             try {
                 // 取得用户信息
                 InputStream inputStream = request.getInputStream();
@@ -65,7 +66,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
 
                 if (JcStringUtils.isNotBlank(jsonStr)) {
                     JSONObject jsonObj = JSON.parseObject(jsonStr);
-                    String username = jsonObj.getString("username");
+                    username = jsonObj.getString("username");
                     if (JcStringUtils.isEmpty(username)) {
                         username = "";
                     }
@@ -89,6 +90,8 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
                 }
             // 参数信息错误
             } catch (Exception ignored) {}
+            // 输入密码有误 操作数添加
+            userService.loginNum(username, UserDao.USER_OP.ADD);
             sendMsg(new JsonView.JsonRet(401, "认证失败，用户名或密码有误！"), response);
         } else {
             // 其它请求放行
@@ -102,12 +105,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
         // 从数据库中取得user信息
         User user = userService.getUserByUsername(username);
         // 进行密码校验
-        boolean flag = user != null && passwordEncoder.matches(original, user.getPassword());
-        if (!flag) {
-            // 输入密码有误 操作数添加
-            userService.loginNum(username, UserDao.USER_OP.ADD);
-        }
-        return flag;
+        return user != null && passwordEncoder.matches(original, user.getPassword());
     }
 
     /**
