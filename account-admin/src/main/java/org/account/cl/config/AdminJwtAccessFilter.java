@@ -1,10 +1,12 @@
 package org.account.cl.config;
 
 import com.alibaba.fastjson.JSON;
+import org.account.cl.ApplicationConst;
 import org.account.cl.permissions.impl.TokenServiceImpl;
 import org.account.cl.view.product.JsonView;
 import org.account.cl.view.product.RetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,9 +28,12 @@ public class AdminJwtAccessFilter extends OncePerRequestFilter {
     @Autowired
     private TokenServiceImpl tokenService;
 
+    @Value("${application.type}")
+    private String applicationType;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(tokenService.isAuthentication(request)) {
+        if(ApplicationConst.APP_ENV_WIN.equals(applicationType) || tokenService.isAuthentication(request)) {
             filterChain.doFilter(request, response);
         } else {
             response.setContentType(RetUtils.CONTENT_TYPE_JSON);

@@ -1,6 +1,9 @@
 server:
   port: 8011
 
+application:
+  type: win
+
 spring:
   user-redis:
     database: 0
