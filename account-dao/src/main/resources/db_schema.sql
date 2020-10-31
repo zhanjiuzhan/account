@@ -16,3 +16,19 @@ create table user (
     index idx_up_date (update_date),
     index idx_ad_date (create_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户基础信息表';
+
+
+# 权限表
+create table permission (
+    id int not null AUTO_INCREMENT comment '权限的标志 唯一',
+    name varchar(32) not null default '' comment '权限描述',
+    url varchar(128) not null default '' comment '请求路径',
+    method varchar(16) not null default '' comment '请求类型',
+    project varchar(32) not null default '' comment '项目代号',
+    status tinyint not null default 0 comment '权限状态 0 新增 1 已确认 2 已经没有了可以自行删除',
+    update_date timestamp not null default '2020-10-31 00:00:00' comment '用户信息修改的时间',
+    create_date timestamp not null default now() comment '用户信息创建的时间',
+    primary key (id),
+    index idx_url (url),
+    index idx_project (project)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';

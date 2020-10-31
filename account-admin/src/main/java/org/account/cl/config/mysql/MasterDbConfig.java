@@ -36,9 +36,11 @@ public class MasterDbConfig {
      */
     @Bean(name = MysqlConst.MASTER_SESSION_FACTORY)
     @Primary
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier(MysqlConst.MASTER_DATASOURCE) DataSource dataSource) throws Exception {
+    public SqlSessionFactory testSqlSessionFactory(@Qualifier(MysqlConst.MASTER_DATASOURCE) DataSource dataSource,
+                                                   @Qualifier("globalConfiguration") org.apache.ibatis.session.Configuration globalConfiguration) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
+        bean.setConfiguration(globalConfiguration);
         return bean.getObject();
     }
 

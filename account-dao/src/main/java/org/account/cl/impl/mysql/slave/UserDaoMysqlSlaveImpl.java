@@ -18,6 +18,7 @@ public interface UserDaoMysqlSlaveImpl {
      * @param username
      * @return
      */
-    @Select("select * from " + USER_TAB + " where username = #{username}")
+    //@Select("select username, password, isEnable, locked, expired, credentials_expired as credentialsExpired, update_date as createDate, create_date as updateDate  from " + USER_TAB + " where username = #{username}")
+    @Select("select *  from " + USER_TAB + " where username = #{username}")
     User getUserByUsername(String username);
 }

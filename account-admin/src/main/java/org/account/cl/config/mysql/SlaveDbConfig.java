@@ -32,9 +32,11 @@ public class SlaveDbConfig {
      * 创建 SqlSessionFactory
      */
     @Bean(name = MysqlConst.SLAVE_SESSION_FACTORY)
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier(MysqlConst.SLAVE_DATASOURCE) DataSource dataSource) throws Exception {
+    public SqlSessionFactory testSqlSessionFactory(@Qualifier(MysqlConst.SLAVE_DATASOURCE) DataSource dataSource,
+                                                   @Qualifier("globalConfiguration") org.apache.ibatis.session.Configuration globalConfiguration) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
+        bean.setConfiguration(globalConfiguration);
         return bean.getObject();
     }
 
