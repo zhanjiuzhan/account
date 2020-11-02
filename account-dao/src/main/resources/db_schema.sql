@@ -32,3 +32,11 @@ create table permission (
     index idx_url (url),
     index idx_project (project)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
+
+# 项目表
+create table project (
+    name varchar(32) not null default '' comment '项目简称',
+    url varchar(256) not null default '' comment '请求路径',
+    description varchar(256) not null default '' comment '项目描述',
+    primary key (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目表';

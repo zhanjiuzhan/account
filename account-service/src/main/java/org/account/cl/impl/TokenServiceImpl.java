@@ -1,6 +1,6 @@
-package org.account.cl.permissions.impl;
+package org.account.cl.impl;
 
-import org.account.cl.permissions.AbstractTokenService;
+import org.account.cl.AbstractTokenService;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.NonNull;

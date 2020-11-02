@@ -2,8 +2,8 @@ package org.account.cl.config;
 
 import org.account.cl.User;
 import org.account.cl.UserDao;
-import org.account.cl.permissions.UserService;
-import org.account.cl.permissions.impl.TokenServiceImpl;
+import org.account.cl.UserService;
+import org.account.cl.impl.TokenServiceImpl;
 import org.account.cl.view.product.JsonView;
 import org.account.cl.view.product.RetUtils;
 import org.springframework.beans.factory.annotation.Autowired;

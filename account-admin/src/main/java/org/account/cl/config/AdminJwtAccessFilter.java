@@ -3,7 +3,7 @@ package org.account.cl.config;
 import com.alibaba.fastjson.JSON;
 import org.account.cl.ApplicationConst;
 import org.account.cl.Permission;
-import org.account.cl.permissions.impl.TokenServiceImpl;
+import org.account.cl.impl.TokenServiceImpl;
 import org.account.cl.view.product.JsonView;
 import org.account.cl.view.product.RetUtils;
 import org.springframework.beans.BeansException;

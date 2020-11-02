@@ -19,7 +19,17 @@ public enum ExceptionEnum implements ExceptionResponse, ExceptionAssert {
     /**
      * 主要针对于对外接口调用参数异常
      */
-    INVALID_PARAMETER(400, "参数[{0}]信息错误: {1}, {0}: {2}"),
+    INVALID_PARAMETER(400, "参数[{0} : {1}]信息错误！"),
+
+    /**
+     * 主要针对于对外接口调用参数异常
+     */
+    INVALID_PARAMETER1(400, "参数[{0}]信息错误！"),
+
+    /**
+     * 主要针对于对外接口调用参数异常
+     */
+    INVALID_PARAMETER2(400, "{0}！"),
     ;
 
     /**

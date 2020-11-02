@@ -1,8 +1,9 @@
-package org.account.cl.permissions;
+package org.account.cl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.account.cl.exception.exception.ExceptionEnum;
+import org.account.cl.permissions.TokenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

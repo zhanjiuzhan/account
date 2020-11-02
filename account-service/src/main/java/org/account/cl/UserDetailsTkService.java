@@ -1,4 +1,4 @@
-package org.account.cl.permissions;
+package org.account.cl;
 
 import org.account.cl.User;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -52,10 +52,10 @@ public class User  {
         // 初始值
         this.username = "";
         this.password = "";
-        this.isEnable = 1;
-        this.locked = 0;
-        this.expired = 0;
-        this.credentialsExpired = 0;
+        this.isEnable = -1;
+        this.locked = -1;
+        this.expired = -1;
+        this.credentialsExpired = -1;
         this.createDate = JcDateUtils.getToDay();
         this.updateDate = JcDateUtils.getToDay();
     }

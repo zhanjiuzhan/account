@@ -1,8 +1,13 @@
 package org.account.cl.impl.mysql.slave;
 
 import org.account.cl.User;
+import org.account.cl.condition.UserQuery;
+import org.account.cl.impl.mysql.UserDaoMysqlImplProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+
+import java.util.List;
 
 /**
  * 基础用户信息
@@ -18,7 +23,29 @@ public interface UserDaoMysqlSlaveImpl {
      * @param username
      * @return
      */
-    //@Select("select username, password, isEnable, locked, expired, credentials_expired as credentialsExpired, update_date as createDate, create_date as updateDate  from " + USER_TAB + " where username = #{username}")
     @Select("select *  from " + USER_TAB + " where username = #{username}")
     User getUserByUsername(String username);
+
+    /**
+     * 取得所有的用户信息
+     * @return
+     */
+    @Select("select *  from " + USER_TAB)
+    List<User> gets();
+
+    /**
+     * 根据条件查询用户的信息 有分页
+     * @param query
+     * @return
+     */
+    @SelectProvider(type = UserDaoMysqlImplProvider.class, method = "getsByConditionCount")
+    int getsByConditionCount(UserQuery query);
+
+    /**
+     * 根据条件查询用户的信息 有分页 可以无分页限制
+     * @param query
+     * @return
+     */
+    @SelectProvider(type = UserDaoMysqlImplProvider.class, method = "getsByCondition")
+    List<User> getsByCondition(UserQuery query);
 }

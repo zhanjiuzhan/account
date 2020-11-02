@@ -1,14 +1,16 @@
 package org.account.cl.condition;
 
+import org.account.cl.JcPageUtils;
+
 /**
  * 条件查询用户信息
  * @author Administrator
  */
-public class UserQuery {
+public class UserQuery implements JcPageUtils.Page {
 
-    private String username;
+    private String password;
 
-    private Boolean isEnable;
+    private Boolean enable;
 
     private Boolean expired;
 
@@ -24,21 +26,20 @@ public class UserQuery {
 
     private Integer pageSize;
 
-    public String getUsername() {
-        return username;
+    public String getPassword() {
+        return password;
     }
 
-    public UserQuery setUsername(String username) {
-        this.username = username;
-        return this;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Boolean getEnable() {
-        return isEnable;
+        return enable;
     }
 
     public UserQuery setEnable(Boolean enable) {
-        isEnable = enable;
+        this.enable = enable;
         return this;
     }
 
@@ -94,6 +95,16 @@ public class UserQuery {
     public UserQuery setPagePoint(Integer pagePoint) {
         this.pagePoint = pagePoint;
         return this;
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return getPagePoint() == null ? 0 : getPagePoint();
+    }
+
+    @Override
+    public int getCurrentPageSize() {
+        return getPageSize() == null ? 0 : getPageSize();
     }
 
     public Integer getPageSize() {

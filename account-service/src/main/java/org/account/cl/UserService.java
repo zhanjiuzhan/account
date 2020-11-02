@@ -5,10 +5,9 @@ import org.account.cl.condition.UserQuery;
 import java.util.List;
 
 /**
- * 基础用户信息
  * @author Administrator
  */
-public interface UserDao {
+public interface UserService {
 
     /**
      * 添加一个用户信息
@@ -18,11 +17,18 @@ public interface UserDao {
     boolean addUser(User user);
 
     /**
-     * 根据用户名取得用户的完整信息
+     * 根据用户名取得用户信息
      * @param username
      * @return
      */
     User getUserByUsername(String username);
+
+    /**
+     * 取得一个解密的密码 从前端
+     * @param encodePassword
+     * @return
+     */
+    String getDecodePassword(String encodePassword);
 
     /**
      * 是否添加一个登录失败的统计 true添加 false删除该统计
@@ -30,8 +36,7 @@ public interface UserDao {
      * @param op
      * @return 添加后统计的数目
      */
-    long loginNum(String username, USER_OP op);
-
+    long loginNum(String username, UserDao.USER_OP op);
 
     /**
      * 取得所有的用户信息
@@ -67,10 +72,4 @@ public interface UserDao {
      * @return
      */
     boolean deleteUser(String username);
-
-
-    enum USER_OP {
-        // 操作指标
-        ADD, GET, DEL
-    }
 }

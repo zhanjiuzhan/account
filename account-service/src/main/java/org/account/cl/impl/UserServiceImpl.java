@@ -1,9 +1,10 @@
-package org.account.cl.permissions.impl;
+package org.account.cl.impl;
 
 import org.account.cl.JcSecurityUtils;
 import org.account.cl.User;
 import org.account.cl.UserDao;
-import org.account.cl.permissions.UserService;
+import org.account.cl.UserService;
+import org.account.cl.condition.UserQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -80,6 +82,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public long loginNum(String username, UserDao.USER_OP op) {
         return userDaoCacheImpl.loginNum(username, op);
+    }
+
+    @Override
+    public List<User> gets() {
+        return userDaoCacheImpl.gets();
+    }
+
+    @Override
+    public int getsByConditionCount(UserQuery query) {
+        return userDaoCacheImpl.getsByConditionCount(query);
+    }
+
+    @Override
+    public List<User> getsByCondition(UserQuery query) {
+        return userDaoCacheImpl.getsByCondition(query);
+    }
+
+    @Override
+    public boolean updateUser(String username, UserQuery query) {
+        return userDaoCacheImpl.updateUser(username, query);
+    }
+
+    @Override
+    public boolean deleteUser(String username) {
+        return userDaoCacheImpl.deleteUser(username);
     }
 
     /**
