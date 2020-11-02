@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -28,6 +29,7 @@ import java.util.*;
  */
 @Order(10)
 @Component
+//@WebFilter(urlPatterns = "/", filterName = "admLoginFilter")
 public class AdminJwtLoginFilter extends OncePerRequestFilter {
 
     private List<AdminJwtLoginFilter.VirtualFilter> filters;
