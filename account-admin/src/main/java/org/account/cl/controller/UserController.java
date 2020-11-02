@@ -35,11 +35,7 @@ public class UserController {
         checkPassword(password);
 
         User user = new User(username, password);
-        boolean op = userService.addUser(user);
-        if (!op) {
-            return JsonRetFactory.getRet(500, "用户：" + username + "添加失败！");
-        }
-        return JsonRetFactory.getRet(200, "用户：" + username + "添加成功！");
+        return JsonRetFactory.getRet(userService.addUser(user));
     }
 
     @GetMapping("/gets.do")
