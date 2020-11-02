@@ -1,9 +1,6 @@
 package org.account.cl.impl;
 
-import org.account.cl.JcSecurityUtils;
-import org.account.cl.User;
-import org.account.cl.UserDao;
-import org.account.cl.UserService;
+import org.account.cl.*;
 import org.account.cl.condition.UserQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +98,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUser(String username, UserQuery query) {
+        if (JcStringUtils.isNotBlank(query.getPassword())) {
+            // 将用户的密码进行解码
+            String original = getDecodePassword(query.getPassword());
+            // 将用户密码进行编码
+            query.setPassword(getBCryptPassword(original));
+        }
         return userDaoCacheImpl.updateUser(username, query);
     }
 

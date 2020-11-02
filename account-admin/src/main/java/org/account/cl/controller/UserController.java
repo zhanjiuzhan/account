@@ -56,6 +56,9 @@ public class UserController {
     @PutMapping("/update.do")
     public JsonView update(String username, UserQuery query) {
         checkUsername(username);
+        if (query.getPassword() != null) {
+            checkPassword(query.getPassword());
+        }
         checkQueue(query);
 
         return JsonRetFactory.getRet(userService.updateUser(username, query));
