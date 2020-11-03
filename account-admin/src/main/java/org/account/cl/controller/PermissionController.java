@@ -16,7 +16,7 @@ import java.util.List;
  * @author Administrator
  */
 @Controller
-@RequestMapping("/permission")
+@RequestMapping("/admin/permission")
 public class PermissionController {
 
     @Autowired

@@ -23,14 +23,14 @@ public interface UserDaoMysqlSlaveImpl {
      * @param username
      * @return
      */
-    @Select("select *  from " + USER_TAB + " where username = #{username}")
+    @Select("select *  from " + USER_TAB + " where username = #{username} ")
     User getUserByUsername(String username);
 
     /**
      * 取得所有的用户信息
      * @return
      */
-    @Select("select *  from " + USER_TAB)
+    @Select("select *  from " + USER_TAB + " order by update_date desc")
     List<User> gets();
 
     /**

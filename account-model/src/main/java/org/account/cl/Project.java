@@ -20,6 +20,10 @@ public class Project {
      */
     private String description;
 
+    private String updateDate;
+
+    private String createDate;
+
     public String getName() {
         return name;
     }
@@ -42,5 +46,32 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", description='" + description + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                ", createDate='" + createDate + '\'' +
+                '}';
     }
 }

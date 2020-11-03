@@ -32,7 +32,7 @@ public class PermissionDaoMysqlProvider extends BaseProvider {
         SQL sql = new SQL();
         sql.SELECT("*").FROM(PERMISSION_TAB);
         sql = makeCommonQuery(sql, query);
-        return sql.toString() + getLimit(query.getPagePoint(), query.getPageSize());
+        return sql.toString() + " order by update_date desc " + getLimit(query.getPagePoint(), query.getPageSize());
     }
 
     private SQL makeCommonQuery(SQL sql, PermissionQuery query) {

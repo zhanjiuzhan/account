@@ -38,5 +38,7 @@ create table project (
     name varchar(32) not null default '' comment '项目简称',
     url varchar(256) not null default '' comment '请求路径',
     description varchar(256) not null default '' comment '项目描述',
+    update_date timestamp not null default '2020-10-31 00:00:00' comment '信息修改的时间',
+    create_date timestamp not null default now() comment '信息创建的时间',
     primary key (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目表';

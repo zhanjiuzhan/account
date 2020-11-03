@@ -3,17 +3,16 @@ package org.account.cl.impl.mysql.slave;
 import org.account.cl.Permission;
 import org.account.cl.condition.PermissionQuery;
 import org.account.cl.impl.mysql.PermissionDaoMysqlProvider;
-import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * @author Administrator
  */
-@Repository
+@Mapper
 public interface PermissionDaoMysqlSlaveImpl {
 
     String PERMISSION_TAB = "permission";
