@@ -67,4 +67,12 @@ public interface PermissionService {
      * @return
      */
     boolean delPermission(int id);
+
+    /**
+     * 用来刷新permissons的信息的
+     * @param project
+     * @param permissions
+     * @return
+     */
+    boolean refreshPermissions(String project, List<Permission> permissions);
 }

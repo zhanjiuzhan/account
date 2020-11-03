@@ -116,6 +116,25 @@ public class Permission {
     }
 
     @Override
+    public int hashCode() {
+        if (this.url == null || this.project == null || this.method == null) {
+            return super.hashCode();
+        } else {
+            return (this.url + this.method +this.project).hashCode();
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this.url == null || this.project == null || this.method == null) {
+            return super.equals(obj);
+        } else {
+            Permission tmp = (Permission)obj;
+            return this.url.equals(tmp.url) && this.method.equals(tmp.getMethod()) && this.project.equals(tmp.getProject());
+        }
+    }
+
+    @Override
     public String toString() {
         return "Permission{" +
                 "id=" + id +

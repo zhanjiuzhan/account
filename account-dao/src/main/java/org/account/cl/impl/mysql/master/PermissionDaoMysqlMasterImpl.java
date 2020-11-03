@@ -3,10 +3,7 @@ package org.account.cl.impl.mysql.master;
 import org.account.cl.Permission;
 import org.account.cl.condition.PermissionQuery;
 import org.account.cl.impl.mysql.PermissionDaoMysqlProvider;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,7 +38,7 @@ public interface PermissionDaoMysqlMasterImpl {
             "</foreach>",
             "</script>"
     })
-    boolean batchAdd(List<Permission> permissions);
+    boolean batchAdd(@Param("permissions") List<Permission> permissions);
 
     /**
      * 更新一个权限信息
@@ -59,7 +56,7 @@ public interface PermissionDaoMysqlMasterImpl {
      * @param status
      * @return
      */
-    @Update("update " + PERMISSION_TAB + " set name = #{name}, status = #{status} where id =#{id}")
+    @Update("update " + PERMISSION_TAB + " set name = #{name}, status = #{status}, update_date=now() where id =#{id}")
     boolean updatePermission2(int id, String name, int status);
 
     /**

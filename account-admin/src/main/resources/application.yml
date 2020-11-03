@@ -3,6 +3,7 @@ server:
 
 application:
   type: win
+  name: account
 
 spring:
   user-redis:

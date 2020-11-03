@@ -3,14 +3,16 @@ package org.account.cl.config;
 import com.alibaba.fastjson.JSON;
 import org.account.cl.ApplicationConst;
 import org.account.cl.Permission;
+import org.account.cl.PermissionService;
 import org.account.cl.impl.TokenServiceImpl;
 import org.account.cl.view.product.JsonView;
 import org.account.cl.view.product.RetUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.Order;
@@ -23,7 +25,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -41,11 +42,20 @@ import java.util.Set;
 @Order(20)
 //@WebFilter(urlPatterns = "/", filterName = "admAccessFilter")
 public class AdminJwtAccessFilter extends OncePerRequestFilter implements ApplicationContextAware, SmartInitializingSingleton {
+
+    private final static Logger logger = LoggerFactory.getLogger(AdminJwtAccessFilter.class);
+
     @Autowired
     private TokenServiceImpl tokenService;
 
+    @Autowired
+    private PermissionService permissionService;
+
     @Value("${application.type}")
     private String applicationType;
+
+    @Value("${application.name}")
+    private String projectName;
 
     private ApplicationContext context;
 
@@ -87,6 +97,7 @@ public class AdminJwtAccessFilter extends OncePerRequestFilter implements Applic
                 permission.setUrl(url);
                 permission.setMethod(methods != null && methods.size() > 0 ? methods.iterator().next().toString() : "");
                 permission.setStatus(0);
+                permission.setProject(projectName);
                 if (url.equals("/error")) {
                     permission.setName("系统定义");
                     permission.setStatus(1);
@@ -103,7 +114,14 @@ public class AdminJwtAccessFilter extends OncePerRequestFilter implements Applic
      * @param permissions
      */
     private void upPermissionsToDb(List<Permission> permissions) {
-        permissions.forEach(System.out::println);
+        if (permissions.size() > 0) {
+            boolean flag = permissionService.refreshPermissions(permissions.get(0).getProject(), permissions);
+            if (flag) {
+                logger.info("项目权限初始化完成!");
+            } else {
+                logger.info("项目权限初始化失败!");
+            }
+        }
     }
 
     @Override

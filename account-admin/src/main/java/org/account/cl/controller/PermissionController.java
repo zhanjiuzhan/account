@@ -36,6 +36,7 @@ public class PermissionController {
 
     @PostMapping("/add.do")
     public JsonView add(Permission permission) {
+        permission.setStatus(0);
         checkPermission(permission);
         return JsonRetFactory.getRet(permissionService.add(permission));
     }
