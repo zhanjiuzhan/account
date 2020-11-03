@@ -46,10 +46,11 @@ public interface PermissionDao {
 
     /**
      * 修改权限信息
-     * @param permission
+     * @param id
+     * @param query
      * @return
      */
-    boolean updatePermission(Permission permission);
+    boolean updatePermission(int id, PermissionQuery query);
 
     /**
      * 修改权限的相关信息

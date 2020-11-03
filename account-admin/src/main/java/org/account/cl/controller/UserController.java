@@ -21,8 +21,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/get.do")
-    public JsonView getUser(String username) {
+    @GetMapping("/get/{username}.do")
+    public JsonView getUser(@PathVariable String username) {
         checkUsername(username);
 
         User user = userService.getUserByUsername(username);

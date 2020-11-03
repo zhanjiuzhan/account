@@ -52,7 +52,7 @@ public class PermissionQuery {
         return this;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
