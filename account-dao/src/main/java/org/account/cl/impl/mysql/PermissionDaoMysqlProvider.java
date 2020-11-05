@@ -32,7 +32,7 @@ public class PermissionDaoMysqlProvider extends BaseProvider {
         SQL sql = new SQL();
         sql.SELECT("*").FROM(PERMISSION_TAB);
         sql = makeCommonQuery(sql, query);
-        return sql.toString() + " order by update_date desc " + getLimit(query.getPagePoint(), query.getPageSize());
+        return sql.toString() + ORDER_BY_UPDATE_DESC + getLimit(query);
     }
 
     private SQL makeCommonQuery(SQL sql, PermissionQuery query) {
@@ -68,7 +68,7 @@ public class PermissionDaoMysqlProvider extends BaseProvider {
         if (query.getStatus() != null) {
             sql.SET(getNVal("status", query.getStatus()));
         }
-        sql.SET("update_date = now()");
+        sql.SET(REFRESH_UPDATE);
         sql.WHERE(getNVal("id", id));
         return sql.toString();
     }

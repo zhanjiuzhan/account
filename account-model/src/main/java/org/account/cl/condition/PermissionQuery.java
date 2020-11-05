@@ -1,11 +1,9 @@
 package org.account.cl.condition;
 
-import org.account.cl.JcPageUtils;
-
 /**
  * @author Administrator
  */
-public class PermissionQuery extends BaseQuery<PermissionQuery> implements JcPageUtils.Page {
+public class PermissionQuery extends BaseQuery<PermissionQuery> {
 
     /**
      * 项目名
@@ -28,9 +26,7 @@ public class PermissionQuery extends BaseQuery<PermissionQuery> implements JcPag
      */
     private String method;
 
-    private Integer pagePoint;
 
-    private Integer pageSize;
 
     public String getProject() {
         return project;
@@ -68,34 +64,6 @@ public class PermissionQuery extends BaseQuery<PermissionQuery> implements JcPag
         return this;
     }
 
-    public Integer getPagePoint() {
-        return pagePoint;
-    }
-
-    public PermissionQuery setPagePoint(Integer pagePoint) {
-        this.pagePoint = pagePoint;
-        return this;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public PermissionQuery setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-        return this;
-    }
-
-    @Override
-    public int getCurrentPage() {
-        return getPagePoint() == null ? 0 : getPagePoint();
-    }
-
-    @Override
-    public int getCurrentPageSize() {
-        return getPageSize() == null ? 0 : getPageSize();
-    }
-
     @Override
     public String toString() {
         return "PermissionQuery{" +
@@ -103,8 +71,6 @@ public class PermissionQuery extends BaseQuery<PermissionQuery> implements JcPag
                 ", url='" + url + '\'' +
                 ", status=" + status +
                 ", method='" + method + '\'' +
-                ", pagePoint=" + pagePoint +
-                ", pageSize=" + pageSize +
                 "} " + super.toString();
     }
 }

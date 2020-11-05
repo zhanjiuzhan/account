@@ -20,7 +20,7 @@ public interface RoleDaoMysqlSlaveImpl {
      * @param id
      * @return
      */
-    @Select("select * from " + ROLE_TAB + " where id = #{id} limit 1")
+    @Select("select * from " + ROLE_TAB + " where sid = #{id} limit 1")
     Role get(int id);
 
     /**
@@ -39,7 +39,7 @@ public interface RoleDaoMysqlSlaveImpl {
             "select * from " + ROLE_TAB +
             " where sid is not null " +
             "<when test='pid != null'>" +
-            " and pid=#{pid}" +
+            " and find_in_set(sid, getSubRole(#{pid}))" +
             "</when>" +
             "<when test='name != null'>" +
             " and name=#{name}" +
@@ -50,10 +50,10 @@ public interface RoleDaoMysqlSlaveImpl {
             "<when test='status != null'>" +
             " and status=#{status}" +
             "</when>" +
-            "<when test='createDateStart != null && createDateEnd != null'>" +
+            "<when test='createDateStart != null and createDateEnd != null'>" +
             " and date_format(create_date, '%Y-%m-%d') &gt;= #{createDateStart} and date_format(create_date, '%Y-%m-%d') &lt;= #{createDateEnd} " +
             "</when>" +
-            "<when test='updateDateStart != null && updateDateEnd != null'>" +
+            "<when test='updateDateStart != null and updateDateEnd != null'>" +
             " and date_format(update_date, '%Y-%m-%d') &gt;= #{updateDateStart} and update_date(create_date, '%Y-%m-%d') &lt;= #{updateDateEnd} " +
             "</when>" +
             "order by update_date desc" +

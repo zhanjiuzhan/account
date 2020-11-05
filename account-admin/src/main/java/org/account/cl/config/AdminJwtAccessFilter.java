@@ -93,16 +93,14 @@ public class AdminJwtAccessFilter extends OncePerRequestFilter implements Applic
             // 获取请求方式 Get,Post等等
             Set<RequestMethod> methods = info.getMethodsCondition().getMethods();
             for (String url : patterns){
+                if (url.equals("/error")) {
+                    continue;
+                }
                 Permission permission = new Permission();
                 permission.setUrl(url);
                 permission.setMethod(methods != null && methods.size() > 0 ? methods.iterator().next().toString() : "");
                 permission.setStatus(0);
                 permission.setProject(projectName);
-                if (url.equals("/error")) {
-                    permission.setName("系统定义");
-                    permission.setStatus(1);
-                    permission.setMethod("SYSTEM");
-                }
                 permissions.add(permission);
             }
         }

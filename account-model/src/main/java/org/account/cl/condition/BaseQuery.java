@@ -1,9 +1,15 @@
 package org.account.cl.condition;
 
+import org.account.cl.JcPageUtils;
+
 /**
  * @author Administrator
  */
-public class BaseQuery<T> {
+public class BaseQuery<T> implements JcPageUtils.Page {
+
+    private Integer pagePoint;
+
+    private Integer pageSize;
 
     private String createDateStart;
 
@@ -50,10 +56,40 @@ public class BaseQuery<T> {
         return (T) this;
     }
 
+    public Integer getPagePoint() {
+        return pagePoint;
+    }
+
+    public T setPagePoint(Integer pagePoint) {
+        this.pagePoint = pagePoint;
+        return (T) this;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public T setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+        return (T) this;
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return getPagePoint() == null ? 0 : getPagePoint();
+    }
+
+    @Override
+    public int getCurrentPageSize() {
+        return getPageSize() == null ? 0 : getPageSize();
+    }
+
     @Override
     public String toString() {
         return "BaseQuery{" +
-                "createDateStart='" + createDateStart + '\'' +
+                "pagePoint=" + pagePoint +
+                ", pageSize=" + pageSize +
+                ", createDateStart='" + createDateStart + '\'' +
                 ", createDateEnd='" + createDateEnd + '\'' +
                 ", updateDateStart='" + updateDateStart + '\'' +
                 ", updateDateEnd='" + updateDateEnd + '\'' +

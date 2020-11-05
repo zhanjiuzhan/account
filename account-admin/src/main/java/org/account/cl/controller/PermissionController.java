@@ -1,5 +1,6 @@
 package org.account.cl.controller;
 
+import org.account.cl.JcPageUtils;
 import org.account.cl.Permission;
 import org.account.cl.PermissionService;
 import org.account.cl.condition.PermissionQuery;
@@ -31,7 +32,7 @@ public class PermissionController {
     @GetMapping("/getsByCondition.do")
     public JsonView getsByCondition(PermissionQuery query) {
         checkQuery(query);
-        return JsonRetFactory.getRet(permissionService.getsByCondition(query));
+        return JsonRetFactory.getRet(new JcPageUtils<>(query, permissionService.getsByConditionCount(query), permissionService.getsByCondition(query)));
     }
 
     @PostMapping("/add.do")

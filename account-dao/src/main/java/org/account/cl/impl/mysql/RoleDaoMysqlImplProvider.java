@@ -31,7 +31,7 @@ public class RoleDaoMysqlImplProvider extends BaseProvider {
             sql.SET(getNVal("status", query.getStatus()));
         }
 
-        sql.SET("update_date = now()");
+        sql.SET(REFRESH_UPDATE);
         sql.WHERE(getNVal("sid", id));
         return sql.toString();
     }

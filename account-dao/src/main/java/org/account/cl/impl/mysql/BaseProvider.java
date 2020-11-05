@@ -7,11 +7,15 @@ import org.apache.ibatis.jdbc.SQL;
  * @author Administrator
  */
 public class BaseProvider {
-    protected String getLimit(Integer currentPage, Integer pageSize) {
-        if (currentPage == null || pageSize == null) {
+
+    public final String ORDER_BY_UPDATE_DESC = " order by update_date desc ";
+    public final String REFRESH_UPDATE = " update_date = now() ";
+
+    protected String getLimit(BaseQuery query) {
+        if (query.getPagePoint() == null || query.getPageSize() == null) {
             return "";
         }
-        return " limit " + (currentPage - 1) * pageSize + ", " + pageSize;
+        return " limit " + (query.getPagePoint() - 1) * query.getPageSize() + ", " + query.getPageSize();
     }
 
     protected String getDataBtwVal(String filed, String start, String end) {

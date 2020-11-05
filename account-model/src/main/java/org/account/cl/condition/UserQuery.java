@@ -18,10 +18,6 @@ public class UserQuery extends BaseQuery<UserQuery> implements JcPageUtils.Page 
 
     private Boolean credentialsExpired;
 
-    private Integer pagePoint;
-
-    private Integer pageSize;
-
     public String getPassword() {
         return password;
     }
@@ -66,34 +62,6 @@ public class UserQuery extends BaseQuery<UserQuery> implements JcPageUtils.Page 
         return this;
     }
 
-    public Integer getPagePoint() {
-        return pagePoint;
-    }
-
-    public UserQuery setPagePoint(Integer pagePoint) {
-        this.pagePoint = pagePoint;
-        return this;
-    }
-
-    @Override
-    public int getCurrentPage() {
-        return getPagePoint() == null ? 0 : getPagePoint();
-    }
-
-    @Override
-    public int getCurrentPageSize() {
-        return getPageSize() == null ? 0 : getPageSize();
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public UserQuery setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "UserQuery{" +
@@ -102,8 +70,6 @@ public class UserQuery extends BaseQuery<UserQuery> implements JcPageUtils.Page 
                 ", expired=" + expired +
                 ", locked=" + locked +
                 ", credentialsExpired=" + credentialsExpired +
-                ", pagePoint=" + pagePoint +
-                ", pageSize=" + pageSize +
                 "} " + super.toString();
     }
 }

@@ -32,7 +32,7 @@ public class UserDaoMysqlImplProvider extends BaseProvider {
         SQL sql = new SQL();
         sql.SELECT("*").FROM(USER_TAB);
         sql = makeCommonQuery(sql, query);
-        return sql.toString() + " order by update_date desc " + getLimit(query.getPagePoint(), query.getPageSize());
+        return sql.toString() + ORDER_BY_UPDATE_DESC + getLimit(query);
     }
 
     private SQL makeCommonQuery(SQL sql, UserQuery query) {
@@ -70,7 +70,7 @@ public class UserDaoMysqlImplProvider extends BaseProvider {
         if (query.getExpired() != null) {
             sql.SET(getNVal("expired", query.getExpired() ? 1 : 0));
         }
-        sql.SET("update_date = now()");
+        sql.SET(REFRESH_UPDATE);
         sql.WHERE(getSVal("username", username));
         return sql.toString();
     }
