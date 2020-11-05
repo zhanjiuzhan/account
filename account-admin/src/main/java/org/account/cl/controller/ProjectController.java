@@ -34,6 +34,10 @@ public class ProjectController {
     @PostMapping("/add.do")
     public JsonView add(Project project) {
         checkProject(project);
+
+        Project tmp = projectService.get(project.getName());
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(tmp == null, "项目信息已经存在！");
+
         return JsonRetFactory.getRet(projectService.add(project));
     }
 
@@ -46,6 +50,10 @@ public class ProjectController {
     @PutMapping("/update.do")
     public JsonView update(Project project) {
         checkProject(project);
+
+        Project tmp = projectService.get(project.getName());
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(tmp != null, "项目信息不存在！");
+
         return JsonRetFactory.getRet(projectService.update(project));
     }
 

@@ -56,7 +56,7 @@ public class PermissionQuery {
         return status;
     }
 
-    public PermissionQuery setStatus(int status) {
+    public PermissionQuery setStatus(Integer status) {
         this.status = status;
         return this;
     }
@@ -104,5 +104,19 @@ public class PermissionQuery {
     public PermissionQuery setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "PermissionQuery{" +
+                "project='" + project + '\'' +
+                ", url='" + url + '\'' +
+                ", status=" + status +
+                ", method='" + method + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", pagePoint=" + pagePoint +
+                ", pageSize=" + pageSize +
+                '}';
     }
 }

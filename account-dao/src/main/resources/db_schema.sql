@@ -1,4 +1,5 @@
 # 用户基础表
+
 create table user (
     username varchar(64) not null comment '用户的标志 唯一',
     password varchar(512) not null comment '用户认证 通常为密码',
@@ -19,6 +20,7 @@ create table user (
 
 
 # 权限表
+
 create table permission (
     id int not null AUTO_INCREMENT comment '权限的标志 唯一',
     name varchar(32) not null default '' comment '权限描述',
@@ -34,6 +36,7 @@ create table permission (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
 
 # 项目表
+
 create table project (
     name varchar(32) not null default '' comment '项目简称',
     url varchar(256) not null default '' comment '请求路径',
@@ -42,3 +45,36 @@ create table project (
     create_date timestamp not null default now() comment '信息创建的时间',
     primary key (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目表';
+
+# 角色表
+
+create table role (
+    sid int not null AUTO_INCREMENT comment '角色的标志 唯一',
+    pid int not null default 0 comment '角色的标志 sid 的一个 0 代表根',
+    name varchar(32) not null default '' comment '角色简称',
+    description varchar(32) not null default '' comment '角色描述',
+    status tinyint not null default 0 comment '0 已禁用 1 可用 2 要重新指定pid',
+    update_date timestamp not null default '2020-10-31 00:00:00' comment '信息修改的时间',
+    create_date timestamp not null default now() comment '信息创建的时间',
+    primary key (sid),
+    index idx_pid (pid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
+
+# 角色表 函数创建
+
+delimiter $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getSubRole`(id int) RETURNS varchar(1000) CHARSET utf8
+begin
+    declare ptemp varchar(1000);
+    declare ttemp varchar(1000);
+    set ttemp = '#';
+    set ptemp = cast(id as char);
+    while ptemp is not null do
+        select group_concat(sid) into ptemp from role where find_in_set(pid, ptemp);
+        if ptemp is not null then
+            set ttemp = concat(ttemp,",",ptemp);
+        end if;
+    end while;
+    return ttemp;
+end $$
+delimiter;

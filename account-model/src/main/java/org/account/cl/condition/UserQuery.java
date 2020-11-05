@@ -115,4 +115,19 @@ public class UserQuery implements JcPageUtils.Page {
         this.pageSize = pageSize;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "UserQuery{" +
+                "password='" + password + '\'' +
+                ", enable=" + enable +
+                ", expired=" + expired +
+                ", locked=" + locked +
+                ", credentialsExpired=" + credentialsExpired +
+                ", createDate='" + createDate + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                ", pagePoint=" + pagePoint +
+                ", pageSize=" + pageSize +
+                '}';
+    }
 }

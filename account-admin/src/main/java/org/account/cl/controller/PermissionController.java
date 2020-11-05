@@ -38,21 +38,46 @@ public class PermissionController {
     public JsonView add(Permission permission) {
         permission.setStatus(0);
         checkPermission(permission);
+
+        List<Permission> tmp = permissionService.getsByCondition(new PermissionQuery().setUrl(permission.getUrl()).setProject(permission.getProject()).setMethod(permission.getMethod()));
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(tmp == null || tmp.size() == 0, "该权限已经存在！");
+
         return JsonRetFactory.getRet(permissionService.add(permission));
     }
 
+    /**
+     * 应该用不到该接口
+     * @param permissions
+     * @return
+     */
     @PostMapping("/batchAdd.do")
     public JsonView batchAdd(@RequestBody List<Permission> permissions) {
+        String projectName = "";
         for (Permission permission : permissions) {
             checkPermission(permission);
+            if ("".equals(projectName)) {
+                projectName = permission.getProject();
+            } else if (!projectName.equals(permission.getProject())) {
+                ExceptionEnum.INVALID_PARAMETER2.assertTrue(false, "不是一个项目！");
+            }
+            // TODO 添加已经存在的
         }
-        return JsonRetFactory.getRet(permissionService.batchAdd(permissions));
+
+        // 说明permission信息没有成员
+        if ("".equals(projectName)) {
+            return JsonRetFactory.getRet(true);
+        }
+        return JsonRetFactory.getRet(permissionService.refreshPermissions(projectName, permissions));
     }
 
     @PutMapping("/updatePermission.do")
     public JsonView updatePermission(int id, PermissionQuery query) {
         checkId(id);
         checkQuery(query);
+
+        Permission tmp = permissionService.get(id);
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(tmp != null, "该权限不存在！");
+
         return JsonRetFactory.getRet(permissionService.updatePermission(id, query));
     }
 
@@ -60,6 +85,9 @@ public class PermissionController {
     public JsonView updatePermission2(int id, String name, int status) {
         checkId(id);
         // 参数校验 TODO
+        Permission tmp = permissionService.get(id);
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(tmp != null, "该权限不存在！");
+
         return JsonRetFactory.getRet(permissionService.updatePermission2(id, name, status));
     }
 

@@ -34,7 +34,11 @@ public class UserController {
         checkUsername(username);
         checkPassword(password);
 
-        User user = new User(username, password);
+        // 用户名必须没有被使用
+        User user = userService.getUserByUsername(username);
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(user == null, "用户名已经被使用！");
+
+        user = new User(username, password);
         return JsonRetFactory.getRet(userService.addUser(user));
     }
 
@@ -52,6 +56,11 @@ public class UserController {
     @PutMapping("/update.do")
     public JsonView update(String username, UserQuery query) {
         checkUsername(username);
+
+        // 检查该用户是否存在
+        User user = userService.getUserByUsername(username);
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(user != null, "用户不存在！");
+
         if (query.getPassword() != null) {
             checkPassword(query.getPassword());
         }

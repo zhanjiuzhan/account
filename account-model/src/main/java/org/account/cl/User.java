@@ -132,6 +132,25 @@ public class User  {
     }
 
     @Override
+    public int hashCode() {
+        if (this.username == null) {
+            return super.hashCode();
+        } else {
+            return (this.username).hashCode();
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this.username == null) {
+            return super.equals(obj);
+        } else {
+            User tmp = (User)obj;
+            return this.username.equals(tmp.username);
+        }
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +

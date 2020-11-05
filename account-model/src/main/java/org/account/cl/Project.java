@@ -65,6 +65,25 @@ public class Project {
     }
 
     @Override
+    public int hashCode() {
+        if (this.name == null || this.url == null) {
+            return super.hashCode();
+        } else {
+            return (this.url + this.name).hashCode();
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this.name == null || this.url == null) {
+            return super.equals(obj);
+        } else {
+            Project tmp = (Project)obj;
+            return this.url.equals(tmp.url) && this.name.equals(tmp.getName());
+        }
+    }
+
+    @Override
     public String toString() {
         return "Project{" +
                 "name='" + name + '\'' +
