@@ -19,7 +19,7 @@ public interface ProjectDaoMysqlSlaveImpl {
      * @param name
      * @return
      */
-    @Select("select * from " + PROJECT_TAB + " where name = #{name}")
+    @Select("select * from " + PROJECT_TAB + " where name = #{name}  limit 1")
     Project get(String name);
 
     /**

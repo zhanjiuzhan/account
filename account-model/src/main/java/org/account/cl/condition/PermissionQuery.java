@@ -1,9 +1,11 @@
 package org.account.cl.condition;
 
+import org.account.cl.JcPageUtils;
+
 /**
  * @author Administrator
  */
-public class PermissionQuery {
+public class PermissionQuery extends BaseQuery<PermissionQuery> implements JcPageUtils.Page {
 
     /**
      * 项目名
@@ -25,10 +27,6 @@ public class PermissionQuery {
      * 请求的方式 GET POST等
      */
     private String method;
-
-    private String updateDate;
-
-    private String createDate;
 
     private Integer pagePoint;
 
@@ -70,24 +68,6 @@ public class PermissionQuery {
         return this;
     }
 
-    public String getUpdateDate() {
-        return updateDate;
-    }
-
-    public PermissionQuery setUpdateDate(String updateDate) {
-        this.updateDate = updateDate;
-        return this;
-    }
-
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public PermissionQuery setCreateDate(String createDate) {
-        this.createDate = createDate;
-        return this;
-    }
-
     public Integer getPagePoint() {
         return pagePoint;
     }
@@ -107,16 +87,24 @@ public class PermissionQuery {
     }
 
     @Override
+    public int getCurrentPage() {
+        return getPagePoint() == null ? 0 : getPagePoint();
+    }
+
+    @Override
+    public int getCurrentPageSize() {
+        return getPageSize() == null ? 0 : getPageSize();
+    }
+
+    @Override
     public String toString() {
         return "PermissionQuery{" +
                 "project='" + project + '\'' +
                 ", url='" + url + '\'' +
                 ", status=" + status +
                 ", method='" + method + '\'' +
-                ", updateDate='" + updateDate + '\'' +
-                ", createDate='" + createDate + '\'' +
                 ", pagePoint=" + pagePoint +
                 ", pageSize=" + pageSize +
-                '}';
+                "} " + super.toString();
     }
 }

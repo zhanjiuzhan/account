@@ -48,12 +48,7 @@ public class UserDaoMysqlImplProvider extends BaseProvider {
         if (query.getLocked() != null) {
             sql.WHERE(getNVal("locked", query.getLocked() ? 1 : 0));
         }
-        if (query.getCreateDate() != null) {
-            sql.WHERE(getSVal("create_date",query.getCreateDate()));
-        }
-        if (query.getUpdateDate() != null) {
-            sql.WHERE(getSVal("update_date", query.getUpdateDate()));
-        }
+        makeDateSql(sql, query);
         return sql;
     }
 
@@ -83,14 +78,16 @@ public class UserDaoMysqlImplProvider extends BaseProvider {
     public static void main(String[] args) {
         UserDaoMysqlImplProvider u = new UserDaoMysqlImplProvider();
         UserQuery q = new UserQuery();
-        q.setCreateDate("2020-11-02 00:00:00")
+        q.setCreateDateStart("2020-10-02")
+         .setCreateDateEnd("2020-11-02")
          .setCredentialsExpired(true)
          .setEnable(true)
          .setExpired(true)
          .setLocked(false)
          .setPagePoint(1)
          .setPageSize(20)
-         .setUpdateDate("2020-11-02 00:00:00");
+         .setUpdateDateStart("2020-10-02")
+         .setUpdateDateEnd("2020-11-02");
         System.out.println(u.getsByConditionCount(q));
         System.out.println(u.getsByCondition(q));
         System.out.println(u.updateUser("xx", q));

@@ -6,7 +6,7 @@ import org.account.cl.JcPageUtils;
  * 条件查询用户信息
  * @author Administrator
  */
-public class UserQuery implements JcPageUtils.Page {
+public class UserQuery extends BaseQuery<UserQuery> implements JcPageUtils.Page {
 
     private String password;
 
@@ -17,10 +17,6 @@ public class UserQuery implements JcPageUtils.Page {
     private Boolean locked;
 
     private Boolean credentialsExpired;
-
-    private String createDate;
-
-    private String updateDate;
 
     private Integer pagePoint;
 
@@ -70,24 +66,6 @@ public class UserQuery implements JcPageUtils.Page {
         return this;
     }
 
-    public String getCreateDate() {
-        return createDate;
-    }
-
-    public UserQuery setCreateDate(String createDate) {
-        this.createDate = createDate;
-        return this;
-    }
-
-    public String getUpdateDate() {
-        return updateDate;
-    }
-
-    public UserQuery setUpdateDate(String updateDate) {
-        this.updateDate = updateDate;
-        return this;
-    }
-
     public Integer getPagePoint() {
         return pagePoint;
     }
@@ -124,10 +102,8 @@ public class UserQuery implements JcPageUtils.Page {
                 ", expired=" + expired +
                 ", locked=" + locked +
                 ", credentialsExpired=" + credentialsExpired +
-                ", createDate='" + createDate + '\'' +
-                ", updateDate='" + updateDate + '\'' +
                 ", pagePoint=" + pagePoint +
                 ", pageSize=" + pageSize +
-                '}';
+                "} " + super.toString();
     }
 }

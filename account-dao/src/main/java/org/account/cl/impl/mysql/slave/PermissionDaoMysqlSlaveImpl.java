@@ -22,7 +22,7 @@ public interface PermissionDaoMysqlSlaveImpl {
      * @param id
      * @return
      */
-    @Select("select * from " + PERMISSION_TAB + " where id = #{id}")
+    @Select("select * from " + PERMISSION_TAB + " where id = #{id}  limit 1")
     Permission get(int id);
 
     /**

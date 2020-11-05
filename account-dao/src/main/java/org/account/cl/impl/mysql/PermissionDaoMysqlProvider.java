@@ -48,12 +48,7 @@ public class PermissionDaoMysqlProvider extends BaseProvider {
         if (query.getStatus() != null) {
             sql.WHERE(getNVal("status", query.getStatus()));
         }
-        if (query.getCreateDate() != null) {
-            sql.WHERE(getSVal("create_date",query.getCreateDate()));
-        }
-        if (query.getUpdateDate() != null) {
-            sql.WHERE(getSVal("update_date", query.getUpdateDate()));
-        }
+        makeDateSql(sql, query);
         return sql;
     }
 
