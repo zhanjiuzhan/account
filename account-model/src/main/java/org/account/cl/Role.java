@@ -41,6 +41,17 @@ public class Role {
      */
     private String updateDate;
 
+    {
+        // 初始化 避免null
+        this.sid = -1;
+        this.pid = 0;
+        this.name = "";
+        this.description = "";
+        this.status = 1;
+        this.createDate = JcDateUtils.getToDay();
+        this.updateDate = JcDateUtils.getToDay();
+    }
+
     public int getSid() {
         return sid;
     }

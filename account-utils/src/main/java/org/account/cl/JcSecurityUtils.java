@@ -292,35 +292,23 @@ final public class JcSecurityUtils {
      * @param privateKey RSA 私钥 if null then getPrivateKey()
      * @return 解密后的明文
      */
-    public static String decryptByPrivate(String content, PrivateKey privateKey){
+    public static String decryptByPrivate(String content, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException {
         if (privateKey == null){
             privateKey = getPrivateKey();
         }
-        try {
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE,privateKey);
-            //该密钥能够加密的最大字节长度
-            int splitLength = ((RSAPrivateKey)privateKey).getModulus().bitLength() / 8;
-            byte[] contentBytes = hexStringToBytes(content);
-            byte[][] arrays = splitBytes(contentBytes,splitLength);
-            StringBuffer stringBuffer = new StringBuffer();
-            String sTemp = null;
-            for (byte[] array : arrays){
-                stringBuffer.append(new String(cipher.doFinal(array)));
-            }
-            return stringBuffer.toString();
-        } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("encrypt()#NoSuchAlgorithmException",e);
-        } catch (NoSuchPaddingException e) {
-            LOGGER.error("encrypt()#NoSuchPaddingException",e);
-        } catch (InvalidKeyException e) {
-            LOGGER.error("encrypt()#InvalidKeyException",e);
-        } catch (BadPaddingException e) {
-            LOGGER.error("encrypt()#BadPaddingException",e);
-        } catch (IllegalBlockSizeException e) {
-            LOGGER.error("encrypt()#IllegalBlockSizeException",e);
+
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE,privateKey);
+        //该密钥能够加密的最大字节长度
+        int splitLength = ((RSAPrivateKey)privateKey).getModulus().bitLength() / 8;
+        byte[] contentBytes = hexStringToBytes(content);
+        byte[][] arrays = splitBytes(contentBytes,splitLength);
+        StringBuffer stringBuffer = new StringBuffer();
+        String sTemp = null;
+        for (byte[] array : arrays){
+            stringBuffer.append(new String(cipher.doFinal(array)));
         }
-        return null;
+        return stringBuffer.toString();
     }
 
     /**
@@ -438,7 +426,7 @@ final public class JcSecurityUtils {
         return (byte)"0123456789ABCDEF".indexOf(c);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String s = "test10213asd";
         Map<String, String> map = JcSecurityUtils.generateKeyPair();
         String c1 = JcSecurityUtils.encryptByPublic(s.getBytes(), getPublicKey(map.get("public")));

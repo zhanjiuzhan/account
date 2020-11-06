@@ -23,7 +23,7 @@ public interface UserDaoMysqlSlaveImpl {
      * @param username
      * @return
      */
-    @Select("select *  from " + USER_TAB + " where username = #{username}  limit 1")
+    @Select("select *  from " + USER_TAB + " where username = #{username} limit 1")
     User getUserByUsername(String username);
 
     /**

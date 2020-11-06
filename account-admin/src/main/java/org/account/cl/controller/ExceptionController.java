@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @ControllerAdvice
 @ConditionalOnWebApplication
-@ConditionalOnMissingBean(ExceptionController.class)
 public class ExceptionController {
 
     private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);

@@ -1,5 +1,6 @@
 package org.account.cl.controller;
 
+import org.account.cl.RelationService;
 import org.account.cl.Role;
 import org.account.cl.RoleService;
 import org.account.cl.condition.RoleQuery;
@@ -20,6 +21,9 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private RelationService relationService;
+
     @PostMapping("/add.do")
     public JsonView add(Role role) {
         checkRole(role);
@@ -29,6 +33,7 @@ public class RoleController {
     @DeleteMapping("/del/{id}.do")
     public JsonView delete(@PathVariable int id) {
         checkId(id);
+        ExceptionEnum.INVALID_PARAMETER2.assertFalse(relationService.isExistRoleInRelation(id), "请解绑用户和角色以及角色和权限之间的关系！");
         return JsonRetFactory.getRet(roleService.delete(id));
     }
 

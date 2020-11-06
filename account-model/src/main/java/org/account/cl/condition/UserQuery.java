@@ -8,6 +8,8 @@ import org.account.cl.JcPageUtils;
  */
 public class UserQuery extends BaseQuery<UserQuery> implements JcPageUtils.Page {
 
+    private String oldPassword;
+
     private String password;
 
     private Boolean enable;
@@ -62,10 +64,20 @@ public class UserQuery extends BaseQuery<UserQuery> implements JcPageUtils.Page 
         return this;
     }
 
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public UserQuery setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "UserQuery{" +
-                "password='" + password + '\'' +
+                "oldPassword='" + oldPassword + '\'' +
+                ", password='" + password + '\'' +
                 ", enable=" + enable +
                 ", expired=" + expired +
                 ", locked=" + locked +

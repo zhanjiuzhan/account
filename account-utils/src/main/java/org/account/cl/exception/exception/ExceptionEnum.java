@@ -14,7 +14,7 @@ public enum ExceptionEnum implements ExceptionResponse, ExceptionAssert {
     /**
      * 内部方法调用参数不合法
      */
-    INTERNAL_INVALID_PARAMETER(500, "内部方法参数传递错误.  类名.方法名: {0}, 参数名: {1}, 传递值: {2}"),
+    INTERNAL_INVALID_PARAMETER(500, "内部方法参数传递错误.  类名.方法名: {0}, 参数名: {1}, 传递值: {2}！"),
 
     /**
      * 主要针对于对外接口调用参数异常

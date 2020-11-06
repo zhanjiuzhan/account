@@ -3,8 +3,14 @@ package org.account.cl.config;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.account.cl.JcStringUtils;
+import org.account.cl.Permission;
+import org.account.cl.PermissionService;
+import org.account.cl.condition.PermissionQuery;
 import org.account.cl.view.product.JsonView;
 import org.account.cl.view.product.RetUtils;
+import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.OrderComparator;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -30,11 +36,17 @@ import java.util.*;
 @Order(10)
 @Component
 //@WebFilter(urlPatterns = "/", filterName = "admLoginFilter")
-public class AdminJwtLoginFilter extends OncePerRequestFilter {
+public class AdminJwtLoginFilter extends OncePerRequestFilter implements SmartInitializingSingleton {
 
     private List<AdminJwtLoginFilter.VirtualFilter> filters;
     private final static String LOGIN_URL = "/admin/login.do";
     private final static String REQUEST_TYPE = "POST";
+
+    @Value("${application.name}")
+    private String projectName;
+
+    @Autowired
+    private PermissionService permissionService;
 
     /**
      * Content-Type application/json;charset=utf-8
@@ -92,6 +104,28 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter {
         }
         filters.add(filter);
         Collections.sort(filters, AdminJwtLoginFilter.LoginOrderComparator.COMPARATOR);
+    }
+
+    /**
+     * 权限表中添加登陆连接信息
+     */
+    @Override
+    public void afterSingletonsInstantiated() {
+        Optional.ofNullable(
+            permissionService.getsByCondition(
+                new PermissionQuery()
+                    .setMethod(REQUEST_TYPE)
+                    .setProject(projectName)
+                    .setUrl(LOGIN_URL)))
+            .filter(permissions->permissions.size() == 0).ifPresent(t->{
+            Permission p = new Permission();
+            p.setMethod(REQUEST_TYPE);
+            p.setName("登陆获取Token");
+            p.setProject(projectName);
+            p.setUrl(LOGIN_URL);
+            p.setStatus(1);
+            permissionService.add(p);
+        });
     }
 
     public interface VirtualFilter {

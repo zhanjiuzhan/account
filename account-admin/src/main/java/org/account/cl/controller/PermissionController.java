@@ -3,6 +3,7 @@ package org.account.cl.controller;
 import org.account.cl.JcPageUtils;
 import org.account.cl.Permission;
 import org.account.cl.PermissionService;
+import org.account.cl.RelationService;
 import org.account.cl.condition.PermissionQuery;
 import org.account.cl.exception.exception.ExceptionEnum;
 import org.account.cl.view.JsonRetFactory;
@@ -22,6 +23,9 @@ public class PermissionController {
 
     @Autowired
     private PermissionService permissionService;
+
+    @Autowired
+    private RelationService relationService;
 
     @GetMapping("/get/{id}.do")
     public JsonView get(@PathVariable int id) {
@@ -95,6 +99,7 @@ public class PermissionController {
     @DeleteMapping("del/{id}.do")
     public JsonView delPermission(@PathVariable int id) {
         checkId(id);
+        ExceptionEnum.INVALID_PARAMETER2.assertFalse(relationService.isExistPermissionInRelation(id), "请解绑角色和权限之间的关系！");
         return JsonRetFactory.getRet(permissionService.delPermission(id));
     }
 

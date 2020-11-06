@@ -18,7 +18,7 @@ public interface UserService {
 
     /**
      * 根据用户名取得用户信息
-     * @param username
+     * @param username 不能是空的
      * @return
      */
     User getUserByUsername(String username);
@@ -72,4 +72,19 @@ public interface UserService {
      * @return
      */
     boolean deleteUser(String username);
+
+    /**
+     * 是不是同一个用户
+     * @param username
+     * @param password
+     * @return
+     */
+    boolean isOneUser(String username, String password);
+
+    /**
+     * 用户是否可用
+     * @param username
+     * @return
+     */
+    boolean isValidUser(String username);
 }

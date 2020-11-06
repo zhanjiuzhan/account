@@ -2,6 +2,7 @@ package org.account.cl.impl;
 
 import org.account.cl.*;
 import org.account.cl.condition.UserQuery;
+import org.account.cl.exception.exception.ExceptionEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final int USERNAME_LEN = 32;
 
     @Value("${security.my.private-key}")
     private String privateKey;
@@ -60,9 +62,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
+        if (username == null || username.trim().length() >= USERNAME_LEN) {
+            return null;
+        }
         return userDaoCacheImpl.getUserByUsername(username);
     }
 
+    /**
+     * 解码前端密码为明文密码
+     * @param encodePassword
+     * @return
+     */
     @Override
     public String getDecodePassword(String encodePassword) {
         try {
@@ -72,7 +82,7 @@ public class UserServiceImpl implements UserService {
             return JcSecurityUtils.decryptByPrivate(new String(pwd), JcSecurityUtils.getPrivateKey(privateKey));
         } catch (Exception e) {
             logger.warn("密码解码失败: " + e.getMessage() + " 未按照规则上传密码!");
-            return "";
+            throw ExceptionEnum.INVALID_PARAMETER2.newException("密码格式有误");
         }
     }
 
@@ -98,6 +108,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUser(String username, UserQuery query) {
+        if (username == null || username.trim().length() >= USERNAME_LEN) {
+            return false;
+        }
+
         if (JcStringUtils.isNotBlank(query.getPassword())) {
             // 将用户的密码进行解码
             String original = getDecodePassword(query.getPassword());
@@ -109,7 +123,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser(String username) {
-        return userDaoCacheImpl.deleteUser(username);
+        if (username == null || username.trim().length() >= USERNAME_LEN) {
+            return true;
+        }
+        User user = getUserByUsername(username);
+        if (user == null) {
+            return true;
+        } else {
+            // 用户已经不可用了 删除了
+            if (user.getIsEnable() == 0) {
+                return userDaoCacheImpl.deleteUser(username);
+            } else {
+                // 修改其状态不可用
+                return userDaoCacheImpl.updateUser(username, new UserQuery().setEnable(false));
+            }
+        }
+    }
+
+    @Override
+    public boolean isOneUser(String username, String password) {
+        // 对密码进行解密
+        String original = getDecodePassword(password);
+        // 从数据库中取得user信息
+        User user = getUserByUsername(username);
+        // 进行密码校验
+        return user != null && passwordEncoder.matches(original, user.getPassword());
+    }
+
+    @Override
+    public boolean isValidUser(String username) {
+        // 从数据库中取得user信息
+        User user = getUserByUsername(username);
+        return user != null && user.getIsEnable() == 1 && user.getExpired() == 0 && user.getLocked() == 0 && user.getCredentialsExpired() == 0;
     }
 
     /**
@@ -132,7 +177,7 @@ public class UserServiceImpl implements UserService {
         return password;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         UserServiceImpl obj = new UserServiceImpl();
         String pwd = "123456";
         String publicPassword = obj.getWebPassword(pwd);
@@ -147,6 +192,6 @@ public class UserServiceImpl implements UserService {
             System.out.println("保存在数据库中的是: " + dbPassowrd);
         }
 
-        System.out.println(obj.getWebPassword("abc1232"));
+        System.out.println(obj.getWebPassword("acc1232"));
     }
 }

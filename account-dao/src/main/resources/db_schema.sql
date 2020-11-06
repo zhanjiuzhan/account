@@ -1,7 +1,7 @@
 # 用户基础表
 
 create table user (
-    username varchar(64) not null comment '用户的标志 唯一',
+    username varchar(32) not null comment '用户的标志 唯一',
     password varchar(512) not null comment '用户认证 通常为密码',
     isEnable tinyint(1) not null default 1 comment '用户是否可用 0 不可用  1 可用',
     expired tinyint(1) not null default 0 comment '用户是否过期 0 没有 1过期',
@@ -78,3 +78,28 @@ begin
     return ttemp;
 end $$
 delimiter;
+
+## 角色权限关系表
+create table role_permission (
+    role_id int not null comment '角色id',
+    permission_id int not null comment '权限id',
+    update_date timestamp not null default '2020-10-31 00:00:00' comment '信息修改的时间',
+    create_date timestamp not null default now() comment '信息创建的时间',
+    primary key (role_id, permission_id),
+    constraint fk_role_id foreign key(role_id) references role(sid) on delete restrict on update restrict,
+    constraint fk_permission_id foreign key(permission_id) references permission(id) on delete restrict on update restrict,
+    index idx_update_time (update_date)
+) engine=InnoDB default charset=utf8 comment='角色权限关系表';
+
+## 角色权限关系表
+
+create table user_role (
+    username varchar(32) not null comment '用户的标志',
+    role_id int not null comment '角色id',
+    update_date timestamp not null default '2020-10-31 00:00:00' comment '信息修改的时间',
+    create_date timestamp not null default now() comment '信息创建的时间',
+    primary key (username, role_id),
+    constraint fk_u_role_id foreign key(role_id) references role(sid) on delete restrict on update restrict,
+    constraint fk_username foreign key(username) references user(username) on delete restrict on update restrict,
+    index idx_u_update_time (update_date)
+) engine=InnoDB default charset=utf8 comment='用户角色关系表';

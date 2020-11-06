@@ -24,6 +24,15 @@ public class Project {
 
     private String createDate;
 
+    {
+        // 初始化 避免null
+        this.url = "";
+        this.name = "";
+        this.description = "";
+        this.createDate = JcDateUtils.getToDay();
+        this.updateDate = JcDateUtils.getToDay();
+    }
+
     public String getName() {
         return name;
     }
