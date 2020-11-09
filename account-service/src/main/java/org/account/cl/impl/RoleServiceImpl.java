@@ -20,6 +20,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean add(Role role) {
+        if (role.getPid() < 1) {
+            role.setPid(0);
+        }
+        role.setStatus(1);
         return roleDao.add(role);
     }
 

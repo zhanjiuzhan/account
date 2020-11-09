@@ -11,6 +11,7 @@ public class RoleDaoMysqlImplProvider extends BaseProvider {
 
     private static final String ROLE_TAB = RoleDaoMysqlMasterImpl.ROLE_TAB;
 
+    // TODO 存在sql注入问题
     public String updateRole(int id, RoleQuery query) {
         SQL sql = new SQL();
         sql.UPDATE(ROLE_TAB);

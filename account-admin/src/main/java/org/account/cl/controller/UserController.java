@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 /**
  * 用户控制器 提供用户相关的操作
@@ -28,24 +29,81 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private RelationService relationService;
 
+    /**
+     * 取得一个用户的信息 目前来说就是取得用户的状态的 以后可以取得详细
+     * TODO 应该为取得用户的详细信息
+     * @param username
+     * @return
+     */
     @GetMapping("/get/{username}.do")
     public JsonView getUser(@PathVariable String username) {
+        long start = logUtils.start("查询一个用户的详细信息, username: " + username);
         checkUsername(username);
 
+        // 只能取到用户的状态信息
         User user = userService.getUserByUsername(username);
+        // 取得用户的详细信息
+
+        logUtils.end("查询一个用户的详细信息完成", start);
         return JsonRetFactory.getRet(user == null ? Collections.emptyMap() : user);
     }
 
+    /**
+     * 取得所有的用户信息 管理员使用
+     * @return
+     */
     @GetMapping("/gets.do")
     public JsonView gets() {
-        return JsonRetFactory.getRet(userService.gets());
+        long start = logUtils.start("查询所有的用户信息");
+        List<User> users = userService.gets();
+        logUtils.end("查询所有的用户信息完成", start);
+        return JsonRetFactory.getRet(users);
     }
 
+    /**
+     * 根据条件来查询用户的信息 可以分页也可以不分页 取决于参数的设置
+     * @param query
+     * @return
+     */
     @GetMapping("/getByCondition.do")
     public JsonView getByCondition(UserQuery query) {
-        return JsonRetFactory.getRet(new JcPageUtils<>(query, userService.getsByConditionCount(query), userService.getsByCondition(query)));
+        long start = logUtils.start("依据条件查询用户信息, query:" + query.toString());
+        JcPageUtils<User> pages = new JcPageUtils<>(query, userService.getsByConditionCount(query), userService.getsByCondition(query));
+        logUtils.end("依据条件查询用户信息完成", start);
+        return JsonRetFactory.getRet();
+    }
+
+    /**
+     * 根据用户名 取得所具有的角色信息
+     * @param username
+     * @return
+     */
+    @GetMapping("/getRole/{username}.do")
+    public JsonView getRoles(@PathVariable String username) {
+        long start = logUtils.start("依据用户名查询用户所具有的角色信息, username: " + username);
+        checkUsername(username);
+        List<Role> roles = relationService.getRoleByUser(username);
+        logUtils.end("依据用户名查询用户所具有的角色信息完成", start);
+        return JsonRetFactory.getRet(roles);
+    }
+
+    /**
+     * 根据用户名 取得所具有的权限信息
+     * @param username
+     * @return
+     */
+    @GetMapping("/getPermission/{username}.do")
+    public JsonView getPermissions(@PathVariable String username) {
+        long start = logUtils.start("依据用户名查询用户所具有的权限信息, username: " + username);
+        checkUsername(username);
+        List<Permission> roles = relationService.getPermissionByUser(username);
+        logUtils.end("依据用户名查询用户所具有的权限信息", start);
+        return JsonRetFactory.getRet(roles);
     }
 
     /**
@@ -71,7 +129,7 @@ public class UserController {
     /**
      * 根据用户名 进行用户信息的修该 通常用于管理员修改用户信息 用户修改密码 已经其它渠道对用户账号的信息修改
      * @param username 用户名 必须
-     * @param query 用户修改后的参数
+     * @param query 用户修改后的参数 TODO 查询的时候算是拼接字符串 需要特别注意 当字符串的sql 注入问题
      * @return msg 或者 true 或则 false
      */
     @PutMapping("/update.do")
@@ -109,6 +167,30 @@ public class UserController {
         // 第一次删除 修改其为不可用 第二次才会真正删除
         boolean flag = userService.deleteUser(username);
         logUtils.end("删除一个用户信息, flag: " + flag, start);
+        return JsonRetFactory.getRet(flag);
+    }
+
+    /**
+     * 给用户分配角色 通常注册的用户应该分配为 普通用户
+     * @param username 必须 < 32
+     * @param sid
+     * @return msg 或者 true 或则 false
+     */
+    @PostMapping("/add/role.do")
+    public JsonView addRole(String username, int sid) {
+        long start = logUtils.start("给用户分配一个角色信息, username: " + username + " sid: " + sid);
+        checkUsername(username);
+        // 检查该用户是否存在
+        User user = userService.getUserByUsername(username);
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(user != null, "用户不存在");
+
+        // 检查role 是否存在
+        Role role = roleService.get(sid);
+        ExceptionEnum.INVALID_PARAMETER2.assertTrue(role != null, "角色不存在");
+
+        // 绑定用户和角色的信息
+        boolean flag = relationService.bindUserRelation(username, sid);
+        logUtils.end("给用户分配一个角色信息, flag: " + flag, start);
         return JsonRetFactory.getRet(flag);
     }
 

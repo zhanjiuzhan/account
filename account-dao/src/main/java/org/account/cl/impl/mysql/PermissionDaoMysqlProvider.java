@@ -35,6 +35,7 @@ public class PermissionDaoMysqlProvider extends BaseProvider {
         return sql.toString() + ORDER_BY_UPDATE_DESC + getLimit(query);
     }
 
+    // TODO 存在sql注入问题
     private SQL makeCommonQuery(SQL sql, PermissionQuery query) {
         if (query.getProject() != null) {
             sql.WHERE(getSVal("project", query.getProject()));
@@ -52,6 +53,7 @@ public class PermissionDaoMysqlProvider extends BaseProvider {
         return sql;
     }
 
+    // TODO 存在sql注入问题
     public String updatePermission(int id, PermissionQuery query) {
         SQL sql = new SQL();
         sql.UPDATE(PERMISSION_TAB);

@@ -35,6 +35,7 @@ public class UserDaoMysqlImplProvider extends BaseProvider {
         return sql.toString() + ORDER_BY_UPDATE_DESC + getLimit(query);
     }
 
+    // TODO 存在sql注入问题
     private SQL makeCommonQuery(SQL sql, UserQuery query) {
         if (query.getCredentialsExpired() != null) {
             sql.WHERE(getNVal("credentials_expired", query.getCredentialsExpired() ? 1 : 0));
@@ -52,6 +53,7 @@ public class UserDaoMysqlImplProvider extends BaseProvider {
         return sql;
     }
 
+    // TODO 存在sql注入问题
     public String updateUser(String username, UserQuery query) {
         SQL sql = new SQL();
         sql.UPDATE(USER_TAB);
