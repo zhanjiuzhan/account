@@ -42,7 +42,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter implements SmartIn
     private final static String LOGIN_URL = "/admin/login.do";
     private final static String REQUEST_TYPE = "POST";
 
-    @Value("${application.name}")
+    @Value("${spring.application.name}")
     private String projectName;
 
     @Autowired

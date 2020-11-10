@@ -51,10 +51,10 @@ public class AdminJwtAccessFilter extends OncePerRequestFilter implements Applic
     @Autowired
     private PermissionService permissionService;
 
-    @Value("${application.type}")
+    @Value("${spring.application.type}")
     private String applicationType;
 
-    @Value("${application.name}")
+    @Value("${spring.application.name}")
     private String projectName;
 
     private ApplicationContext context;
