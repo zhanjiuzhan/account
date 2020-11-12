@@ -27,9 +27,9 @@ import java.io.Writer;
 @Component
 @Order(20)
 //@WebFilter(urlPatterns = "/", filterName = "admAccessFilter")
-public class AdminJwtAccessFilter extends OncePerRequestFilter {
+public class UserJwtAccessFilter extends OncePerRequestFilter {
 
-    private final static Logger logger = LoggerFactory.getLogger(AdminJwtAccessFilter.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserJwtAccessFilter.class);
 
     @Autowired
     private TokenServiceImpl tokenService;
@@ -37,29 +37,19 @@ public class AdminJwtAccessFilter extends OncePerRequestFilter {
     @Value("${spring.application.type}")
     private String applicationType;
 
-    @Value("${spring.application.name}")
-    private String projectName;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(ApplicationConst.APP_ENV_WIN.equals(applicationType)) {
+        if(ApplicationConst.APP_ENV_WIN.equals(applicationType) || tokenService.isAuthentication(request)) {
             filterChain.doFilter(request, response);
-            logger.info("开发环境, 不用权限校验！");
         } else {
-            // 正式环境
-            request.setAttribute("projectName", projectName);
-            if(tokenService.isAuthentication(request)) {
-                filterChain.doFilter(request, response);
-            } else {
-                response.setContentType(RetUtils.CONTENT_TYPE_JSON);
-                String res = JSON.toJSONString(new JsonView.JsonRet(403, "用户没有权限！"));
-                try (Writer out = response.getWriter();) {
-                    response.setContentLength(res.getBytes(RetUtils.CHARACTER_CODE).length);
-                    out.write(res);
-                    out.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            response.setContentType(RetUtils.CONTENT_TYPE_JSON);
+            String res = JSON.toJSONString(new JsonView.JsonRet(403, "用户没有权限！"));
+            try (Writer out = response.getWriter();) {
+                response.setContentLength(res.getBytes(RetUtils.CHARACTER_CODE).length);
+                out.write(res);
+                out.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

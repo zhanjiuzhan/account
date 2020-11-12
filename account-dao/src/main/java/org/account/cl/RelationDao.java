@@ -2,11 +2,7 @@ package org.account.cl;
 
 import java.util.List;
 
-/**
- * 关系服务接口  用户-角色-权限
- * @author Administrator
- */
-public interface RelationService {
+public interface RelationDao {
 
     /**
      * 根据permission Id 查询是否在role_permission 中存在

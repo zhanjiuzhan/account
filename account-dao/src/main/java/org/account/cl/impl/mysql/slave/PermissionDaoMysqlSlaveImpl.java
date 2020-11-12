@@ -3,6 +3,7 @@ package org.account.cl.impl.mysql.slave;
 import org.account.cl.Permission;
 import org.account.cl.condition.PermissionQuery;
 import org.account.cl.impl.mysql.PermissionDaoMysqlProvider;
+import org.account.cl.impl.mysql.master.PermissionDaoMysqlMasterImpl;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -15,7 +16,7 @@ import java.util.List;
 @Mapper
 public interface PermissionDaoMysqlSlaveImpl {
 
-    String PERMISSION_TAB = "permission";
+    String PERMISSION_TAB = PermissionDaoMysqlMasterImpl.PERMISSION_TAB;
 
     /**
      * 根据Id 查询权限信息

@@ -2,6 +2,7 @@ package org.account.cl.impl.mysql.slave;
 
 import org.account.cl.Role;
 import org.account.cl.condition.RoleQuery;
+import org.account.cl.impl.mysql.master.RoleDaoMysqlMasterImpl;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface RoleDaoMysqlSlaveImpl {
 
-    String ROLE_TAB = "role";
+    String ROLE_TAB = RoleDaoMysqlMasterImpl.ROLE_TAB;
 
     /**
      * 根据Id 查询角色信息

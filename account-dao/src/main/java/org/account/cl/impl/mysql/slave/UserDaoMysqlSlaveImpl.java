@@ -3,6 +3,7 @@ package org.account.cl.impl.mysql.slave;
 import org.account.cl.User;
 import org.account.cl.condition.UserQuery;
 import org.account.cl.impl.mysql.UserDaoMysqlImplProvider;
+import org.account.cl.impl.mysql.master.UserDaoMysqlMasterImpl;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -16,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface UserDaoMysqlSlaveImpl {
 
-    String USER_TAB = "user";
+    String USER_TAB = UserDaoMysqlMasterImpl.USER_TAB;
 
     /**
      * 根据用户名取得用户的完整信息

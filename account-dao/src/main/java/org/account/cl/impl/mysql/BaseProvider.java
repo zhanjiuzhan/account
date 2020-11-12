@@ -8,8 +8,8 @@ import org.apache.ibatis.jdbc.SQL;
  */
 public class BaseProvider {
 
-    public final String ORDER_BY_UPDATE_DESC = " order by update_date desc ";
-    public final String REFRESH_UPDATE = " update_date = now() ";
+    public static final String ORDER_BY_UPDATE_DESC = " order by update_date desc ";
+    public static final String REFRESH_UPDATE = " update_date = now() ";
 
     protected String getLimit(BaseQuery query) {
         if (query.getPagePoint() == null || query.getPageSize() == null) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration monitorInterval="5">
     <Properties>
-        <property name="LOG_PATTERN" value="account-user-%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %F - %m%n"/>
+        <property name="LOG_PATTERN" value="account-admin-%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %F - %m%n"/>
     </Properties>
 
     <appenders>

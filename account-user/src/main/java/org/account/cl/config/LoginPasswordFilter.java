@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Administrator
  */
 @Component
-public class LoginPasswordFilter implements AdminJwtLoginFilter.VirtualFilter  {
+public class LoginPasswordFilter implements UserJwtLoginFilter.VirtualFilter  {
 
     @Autowired
     private UserService userService;
@@ -25,7 +25,7 @@ public class LoginPasswordFilter implements AdminJwtLoginFilter.VirtualFilter  {
     private TokenServiceImpl tokenService;
 
     @Override
-    public void doFilter(Map<String, Object> user, HttpServletResponse response, AdminJwtLoginFilter.VirtualFilterChain filterChain) {
+    public void doFilter(Map<String, Object> user, HttpServletResponse response, UserJwtLoginFilter.VirtualFilterChain filterChain) {
         String username = String.valueOf(user.get("username")).trim();
         String password = String.valueOf(user.get("password")).trim();
 
@@ -56,7 +56,7 @@ public class LoginPasswordFilter implements AdminJwtLoginFilter.VirtualFilter  {
 
     @Override
     @Autowired
-    public void apply(AdminJwtLoginFilter loginFilter) {
+    public void apply(UserJwtLoginFilter loginFilter) {
         loginFilter.apply(this);
     }
 }

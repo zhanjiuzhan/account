@@ -20,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -36,10 +35,10 @@ import java.util.*;
 @Order(10)
 @Component
 //@WebFilter(urlPatterns = "/", filterName = "admLoginFilter")
-public class AdminJwtLoginFilter extends OncePerRequestFilter implements SmartInitializingSingleton {
+public class UserJwtLoginFilter extends OncePerRequestFilter implements SmartInitializingSingleton {
 
-    private List<AdminJwtLoginFilter.VirtualFilter> filters;
-    private final static String LOGIN_URL = "/admin/login.do";
+    private List<VirtualFilter> filters;
+    private final static String LOGIN_URL = "/user/login.do";
     private final static String REQUEST_TYPE = "POST";
 
     @Value("${spring.application.name}")
@@ -95,7 +94,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter implements SmartIn
         }
     }
 
-    public void apply(AdminJwtLoginFilter.VirtualFilter filter) {
+    public void apply(VirtualFilter filter) {
         if (filter == null) {
             return;
         }
@@ -103,7 +102,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter implements SmartIn
             filters = new ArrayList<>();
         }
         filters.add(filter);
-        Collections.sort(filters, AdminJwtLoginFilter.LoginOrderComparator.COMPARATOR);
+        Collections.sort(filters, LoginOrderComparator.COMPARATOR);
     }
 
     /**
@@ -142,7 +141,7 @@ public class AdminJwtLoginFilter extends OncePerRequestFilter implements SmartIn
          * 添加自定义login过滤器到login过滤器
          * @param loginFilter
          */
-        void apply(AdminJwtLoginFilter loginFilter);
+        void apply(UserJwtLoginFilter loginFilter);
     }
 
     public static class VirtualFilterChain {

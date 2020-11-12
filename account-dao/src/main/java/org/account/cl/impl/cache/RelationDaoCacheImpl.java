@@ -1,19 +1,13 @@
-package org.account.cl.impl;
+package org.account.cl.impl.cache;
 
 import org.account.cl.Permission;
-import org.account.cl.RelationService;
+import org.account.cl.RelationDao;
 import org.account.cl.Role;
 import org.account.cl.RolePermission;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Administrator
- */
-@Service
-public class RelationServiceImpl implements RelationService {
+public class RelationDaoCacheImpl implements RelationDao {
     @Override
     public boolean isExistPermissionInRelation(int permissionId) {
         return false;
@@ -81,7 +75,7 @@ public class RelationServiceImpl implements RelationService {
 
     @Override
     public List<Permission> getPermissionByUserAndPro(String projectName, String username) {
-        return Collections.emptyList();
+        return null;
     }
 
     @Override

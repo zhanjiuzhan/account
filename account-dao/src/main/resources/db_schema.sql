@@ -18,6 +18,11 @@ create table user (
     index idx_ad_date (create_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户基础信息表';
 
+# 添加两个超管吧  密码都是123456
+
+replace into user values
+    ('chenglei', '$2a$10$WEcaImJsVZdJuog0UnDXe.V8BhBZ5UXRS.ZyNAG108/LBUn5s9MJy', 1, 0, 0, 0, now(), now()),
+    ('jiapeng', '$2a$10$RuGRFjrR6nBEGRwj4V23R.Fd5JNDb.sA/4xdMezJdawPge3zAH6XW', 1, 0, 0, 0, now(), now());
 
 # 权限表
 
@@ -34,6 +39,10 @@ create table permission (
     index idx_url (url),
     index idx_project (project)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
+
+# 添加一个超级权限 主要用于系统管理员
+
+replace into permission values (1, '超级权限', '/**', 'ALL', 'ALL', 1, now(), now());
 
 # 项目表
 
@@ -60,7 +69,10 @@ create table role (
     index idx_pid (pid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
+insert into role values (1, 0, 'super', 'SYSTEM', 1, now(), now());
+
 # 角色表 函数创建
+# 查询指定 roleId 和 其子 roleId
 
 delimiter $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `getSubRole`(id int) RETURNS varchar(1000) CHARSET utf8
@@ -70,12 +82,32 @@ begin
     set ttemp = '#';
     set ptemp = cast(id as char);
     while ptemp is not null do
+        set ttemp = concat(ttemp,",",ptemp);
         select group_concat(sid) into ptemp from role where find_in_set(pid, ptemp);
-        if ptemp is not null then
-            set ttemp = concat(ttemp,",",ptemp);
-        end if;
+        #if ptemp is not null then
+        #end if;
     end while;
-    return ttemp;
+    return REPLACE(ttemp, '#,', '');
+end $$
+delimiter;
+
+# 查询指定 多个RoleId 和它的子roleId
+
+delimiter $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `getSubRoleArr`(ids varchar(500)) RETURNS varchar(1000) CHARSET utf8
+begin
+    declare tindex int;
+    declare result varchar(1000);
+    declare element varchar(1000);
+    set result = '#';
+    set tindex = length(ids) - length(replace(ids, ',', '')) + 1;
+    while tindex > 0 do
+        set tindex = tindex - 1;
+        set element = SUBSTRING_INDEX(ids, ',', -1);
+        set result = CONCAT(result, ',', getSubRole(element));
+        set ids = REPLACE(ids, CONCAT(',', element), '');
+    end while;
+    return REPLACE(result, '#,', '');
 end $$
 delimiter;
 
@@ -91,6 +123,8 @@ create table role_permission (
     index idx_update_time (update_date)
 ) engine=InnoDB default charset=utf8 comment='角色权限关系表';
 
+replace into role_permission values (1, 1, now(), now());
+
 ## 角色权限关系表
 
 create table user_role (
@@ -103,3 +137,6 @@ create table user_role (
     constraint fk_username foreign key(username) references user(username) on delete restrict on update restrict,
     index idx_u_update_time (update_date)
 ) engine=InnoDB default charset=utf8 comment='用户角色关系表';
+
+replace into user_role values ('chenglei', 1, now(), now()), ('jiapeng', 1, now(), now());
+

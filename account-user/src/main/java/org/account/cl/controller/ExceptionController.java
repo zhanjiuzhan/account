@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @ControllerAdvice
 @ConditionalOnWebApplication
-@ConditionalOnMissingBean(ExceptionController.class)
 public class ExceptionController {
 
     private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
@@ -31,6 +30,8 @@ public class ExceptionController {
         JsonView.JsonRet res = new JsonView.JsonRet();
         switch (ex.getExceptionEnum()) {
             case INVALID_PARAMETER:
+            case INVALID_PARAMETER1:
+            case INVALID_PARAMETER2:
                 return exeInvalidParameterException(res, ex);
             case INTERNAL_INVALID_PARAMETER:
                 return exeInternalInvalidParameterException(res, ex);

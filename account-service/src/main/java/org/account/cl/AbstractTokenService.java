@@ -80,7 +80,7 @@ public abstract class AbstractTokenService {
      * @throws AuthenticationException
      */
     private String getUsernameByHeader(String authHeader) {
-        ExceptionEnum.INTERNAL_INVALID_PARAMETER.assertNotNull(authHeader,"AbstractTokenService:getUsernameByHeader", "authHeader", authHeader);
+        ExceptionEnum.INTERNAL_INVALID_PARAMETER.assertNotNull(authHeader, "AbstractTokenService:getUsernameByHeader", "authHeader", authHeader);
 
         // authHeader
         authHeader = authHeader.replace(getTokenPrefix(), "");
@@ -89,12 +89,14 @@ public abstract class AbstractTokenService {
         Claims claims = null;
         try {
             claims = TokenUtils.getClaimByToken(authHeader, getKey());
+
+            if (claims == null || TokenUtils.isTokenExpired(claims.getExpiration())) {
+                return "";
+            }
+            return claims.getSubject();
         } catch (JwtException e) {
-            logger.error(e.toString());
+            logger.warn(e.getMessage());
+            return "";
         }
-        if (claims == null || TokenUtils.isTokenExpired(claims.getExpiration())) {
-            return null;
-        }
-        return claims.getSubject();
     }
 }

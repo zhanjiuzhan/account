@@ -1,2 +1,62 @@
 server:
-  port: 8088
+  port: 8000
+
+spring:
+  application:
+    name: account-user
+    type: win
+  user-redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password:
+    max-active: 8
+    max-wait: -1
+    max-idle: 8
+    min-idle: 4
+  datasource:
+    master:
+      username: root
+      password: 950828
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/account?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # 使用连接池 默认的 hikari
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: 'hikari'
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: 'SELECT 1'
+    slave:
+      username: root
+      password: 950828
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/account?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # 使用连接池 默认的 hikari
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: 'hikari'
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: 'SELECT 1'
+
+mybatis:
+  configuration:
+    # 陀螺峰 自动转换
+    map-underscore-to-camel-case: true
+
+security:
+  my:
+    private-key: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIsFC8TxOaiqiNwi+PFUWMU5YOqllzThHyQg2j27Viw0BNDCBUA2vVxTR/tgGjjluSCaqjMzHraA7ZtQinvtD0jR7wwqmIUqtnlgkDAi62pTF3AANnuLRmRGdXX/Qy8x7T+1S6zm4215R+i3oMwM5FNJkr+z0If1nVtuEsoxyGnjAgMBAAECgYBfHle8K7Tg07YKsR8VuDl40FagliZMNxAgnx3UCR7f5cO5tlbzZcDQr+bbdxjZ/0xYo5p6p6qHAtYQY94tBrlifTYn5HbmQacaVQ2eHLYi4IhrzomH6CerSYL6KJPM8uccwOsPmTjYbrYO1Q5ewmmNau20WGYBb2PGwe9OARPMMQJBANF+hnpBceUi/dboFZCARleJlpMrz/T8Nf/jKTNuZqKapq5WZRTVgGPg6G2KumwV4TjD3iqzixddILpSYwi+VTkCQQCp4Xsp2lzIwcEtC2gAhxsbX+x3RThIcA7P33W3MXMtROjOMDNotVFXy8HavcGmskctK4gjBwsHtAOQ0UYKNLP7AkAqCPc2xLbzwSep3XumOPbkTak28o2RnKHBLHVx6m8RpXJYfOFfYs+WOuSoRjPNyD4ew75qVwhLsdYFTM6uTHKRAkEAlmdKawCoWxmn1SCfILB9YFwp+GLxdLi5dHNsPhfq2C6FS1/DdDXr4aZFaEvOcq6uc6Bx9EkdC+HlskaGEy0cFwJAA8LXayt346misCrkG3ZORUEFHoTCwTdFmqArzBBDiHmiUXddZaDmQsMyX3yVaYBCltl/n3tu7H5Gffht242oqA==
+    public-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLBQvE8TmoqojcIvjxVFjFOWDqpZc04R8kINo9u1YsNATQwgVANr1cU0f7YBo45bkgmqozMx62gO2bUIp77Q9I0e8MKpiFKrZ5YJAwIutqUxdwADZ7i0ZkRnV1/0MvMe0/tUus5uNteUfot6DMDORTSZK/s9CH9Z1bbhLKMchp4wIDAQAB
+
+eureka:
+  client:
+    service-url:
+      # eureka 服务的节点地址(集群会自动同步)
+      defaultZone: http://persist.eureka.org1:9090/eureka
+

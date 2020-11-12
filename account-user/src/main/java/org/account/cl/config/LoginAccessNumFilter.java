@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Order(1)
 @Component
-public class LoginAccessNumFilter implements AdminJwtLoginFilter.VirtualFilter {
+public class LoginAccessNumFilter implements UserJwtLoginFilter.VirtualFilter {
 
     private final static int LOGIN_NUM = 3;
 
@@ -25,7 +25,7 @@ public class LoginAccessNumFilter implements AdminJwtLoginFilter.VirtualFilter {
     private UserService userService;
 
     @Override
-    public void doFilter(Map<String, Object> user, HttpServletResponse response, AdminJwtLoginFilter.VirtualFilterChain filterChain) {
+    public void doFilter(Map<String, Object> user, HttpServletResponse response, UserJwtLoginFilter.VirtualFilterChain filterChain) {
         // 用户是否多次输入有误
         long num = userService.loginNum(String.valueOf(user.get("username")), UserDao.USER_OP.GET);
         if (num >= LOGIN_NUM) {
@@ -37,7 +37,7 @@ public class LoginAccessNumFilter implements AdminJwtLoginFilter.VirtualFilter {
 
     @Override
     @Autowired
-    public void apply(AdminJwtLoginFilter loginFilter) {
+    public void apply(UserJwtLoginFilter loginFilter) {
         loginFilter.apply(this);
     }
 }
