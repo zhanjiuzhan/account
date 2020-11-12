@@ -4,18 +4,35 @@ import org.account.cl.Permission;
 import org.account.cl.RelationDao;
 import org.account.cl.Role;
 import org.account.cl.RolePermission;
+import org.account.cl.impl.mysql.master.RelationDaoMysqlMasterImpl;
+import org.account.cl.impl.mysql.slave.RelationDaoMysqlSlaveImpl;
+import org.apache.ibatis.annotations.Insert;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * @author Administrator
+ */
+@Repository
 public class RelationDaoCacheImpl implements RelationDao {
+
+    @Resource
+    private RelationDaoMysqlMasterImpl relationDaoMysqlMasterImpl;
+
+    @Resource
+    private RelationDaoMysqlSlaveImpl relationDaoMysqlSlaveImpl;
+
     @Override
     public boolean isExistPermissionInRelation(int permissionId) {
-        return false;
+        return relationDaoMysqlSlaveImpl.isExistPermissionInRelation(permissionId);
     }
 
     @Override
     public boolean isExistRoleInRelation(int roleId) {
-        return false;
+        return relationDaoMysqlSlaveImpl.isExistRoleInRelation1(roleId);
     }
 
     @Override
@@ -25,7 +42,7 @@ public class RelationDaoCacheImpl implements RelationDao {
 
     @Override
     public boolean unBindUserRelation(String username) {
-        return false;
+        return relationDaoMysqlMasterImpl.unBindUserRelation1(username);
     }
 
     @Override
@@ -65,27 +82,27 @@ public class RelationDaoCacheImpl implements RelationDao {
 
     @Override
     public List<Role> getRoleByUser(String username) {
-        return null;
+        return relationDaoMysqlSlaveImpl.getRoleByUser(username);
     }
 
     @Override
     public List<Permission> getPermissionByUser(String username) {
-        return null;
+        return relationDaoMysqlSlaveImpl.getPermissionByUser(username);
     }
 
     @Override
     public List<Permission> getPermissionByUserAndPro(String projectName, String username) {
-        return null;
+        return relationDaoMysqlSlaveImpl.getPermissionByUserAndPro(projectName, username);
     }
 
     @Override
     public List<Permission> getPermissionByRole(int roleId) {
-        return null;
+        return relationDaoMysqlSlaveImpl.getPermissionByRole(roleId);
     }
 
     @Override
     public List<RolePermission> gets() {
-        return null;
+        return relationDaoMysqlSlaveImpl.gets();
     }
 
     @Override

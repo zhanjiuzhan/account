@@ -18,14 +18,14 @@ import javax.sql.DataSource;
  * @author Administrator
  */
 @Configuration
-@MapperScan(basePackages = MysqlConst.MASTER_MAP_PATH, sqlSessionTemplateRef = MysqlConst.MASTER_SESSION_TEMPLATE)
+@MapperScan(basePackages = MysqlConfig.MASTER_MAP_PATH, sqlSessionTemplateRef = MysqlConfig.MASTER_SESSION_TEMPLATE)
 public class MasterDbConfig {
     /**
      * 生成数据源.  @Primary 注解声明为默认数据源
      * Primary 说明是默认数据源
      */
-    @Bean(name = MysqlConst.MASTER_DATASOURCE)
-    @ConfigurationProperties(prefix = MysqlConst.MASTER_CONFIG_PROPERTIES)
+    @Bean(name = MysqlConfig.MASTER_DATASOURCE)
+    @ConfigurationProperties(prefix = MysqlConfig.MASTER_CONFIG_PROPERTIES)
     @Primary
     public DataSource testDataSource() {
         return DataSourceBuilder.create().build();
@@ -34,9 +34,9 @@ public class MasterDbConfig {
     /**
      * 创建 SqlSessionFactory
      */
-    @Bean(name = MysqlConst.MASTER_SESSION_FACTORY)
+    @Bean(name = MysqlConfig.MASTER_SESSION_FACTORY)
     @Primary
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier(MysqlConst.MASTER_DATASOURCE) DataSource dataSource,
+    public SqlSessionFactory testSqlSessionFactory(@Qualifier(MysqlConfig.MASTER_DATASOURCE) DataSource dataSource,
                                                    @Qualifier("globalConfiguration") org.apache.ibatis.session.Configuration globalConfiguration) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
@@ -47,15 +47,15 @@ public class MasterDbConfig {
     /**
      * 配置事务管理
      */
-    @Bean(name = MysqlConst.MASTER_TRANSACTION_MANAGER)
+    @Bean(name = MysqlConfig.MASTER_TRANSACTION_MANAGER)
     @Primary
-    public DataSourceTransactionManager testTransactionManager(@Qualifier(MysqlConst.MASTER_DATASOURCE) DataSource dataSource) {
+    public DataSourceTransactionManager testTransactionManager(@Qualifier(MysqlConfig.MASTER_DATASOURCE) DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
-    @Bean(name = MysqlConst.MASTER_SESSION_TEMPLATE)
+    @Bean(name = MysqlConfig.MASTER_SESSION_TEMPLATE)
     @Primary
-    public SqlSessionTemplate testSqlSessionTemplate(@Qualifier(MysqlConst.MASTER_SESSION_FACTORY) SqlSessionFactory sqlSessionFactory) throws Exception {
+    public SqlSessionTemplate testSqlSessionTemplate(@Qualifier(MysqlConfig.MASTER_SESSION_FACTORY) SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }

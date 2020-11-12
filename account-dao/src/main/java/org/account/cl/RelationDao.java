@@ -2,6 +2,9 @@ package org.account.cl;
 
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 public interface RelationDao {
 
     /**

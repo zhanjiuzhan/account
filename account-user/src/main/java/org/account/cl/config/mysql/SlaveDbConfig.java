@@ -17,13 +17,13 @@ import javax.sql.DataSource;
  * @author Administrator
  */
 @Configuration
-@MapperScan(basePackages = MysqlConst.SLAVE_MAP_PATH, sqlSessionTemplateRef = MysqlConst.SLAVE_SESSION_TEMPLATE)
+@MapperScan(basePackages = MysqlConfig.SLAVE_MAP_PATH, sqlSessionTemplateRef = MysqlConfig.SLAVE_SESSION_TEMPLATE)
 public class SlaveDbConfig {
     /**
      * 生成数据源.  @Primary 注解声明为默认数据源
      */
-    @Bean(name = MysqlConst.SLAVE_DATASOURCE)
-    @ConfigurationProperties(prefix = MysqlConst.SLAVE_CONFIG_PROPERTIES)
+    @Bean(name = MysqlConfig.SLAVE_DATASOURCE)
+    @ConfigurationProperties(prefix = MysqlConfig.SLAVE_CONFIG_PROPERTIES)
     public DataSource getDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -31,8 +31,8 @@ public class SlaveDbConfig {
     /**
      * 创建 SqlSessionFactory
      */
-    @Bean(name = MysqlConst.SLAVE_SESSION_FACTORY)
-    public SqlSessionFactory testSqlSessionFactory(@Qualifier(MysqlConst.SLAVE_DATASOURCE) DataSource dataSource,
+    @Bean(name = MysqlConfig.SLAVE_SESSION_FACTORY)
+    public SqlSessionFactory testSqlSessionFactory(@Qualifier(MysqlConfig.SLAVE_DATASOURCE) DataSource dataSource,
                                                    @Qualifier("globalConfiguration") org.apache.ibatis.session.Configuration globalConfiguration) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
@@ -43,13 +43,13 @@ public class SlaveDbConfig {
     /**
      * 配置事务管理
      */
-    @Bean(name = MysqlConst.SLAVE_TRANSACTION_MANAGER)
-    public DataSourceTransactionManager testTransactionManager(@Qualifier(MysqlConst.SLAVE_DATASOURCE) DataSource dataSource) {
+    @Bean(name = MysqlConfig.SLAVE_TRANSACTION_MANAGER)
+    public DataSourceTransactionManager testTransactionManager(@Qualifier(MysqlConfig.SLAVE_DATASOURCE) DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
-    @Bean(name = MysqlConst.SLAVE_SESSION_TEMPLATE)
-    public SqlSessionTemplate testSqlSessionTemplate(@Qualifier(MysqlConst.SLAVE_SESSION_FACTORY) SqlSessionFactory sqlSessionFactory) throws Exception {
+    @Bean(name = MysqlConfig.SLAVE_SESSION_TEMPLATE)
+    public SqlSessionTemplate testSqlSessionTemplate(@Qualifier(MysqlConfig.SLAVE_SESSION_FACTORY) SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 }

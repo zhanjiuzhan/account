@@ -1,9 +1,7 @@
 package org.account.cl.impl;
 
-import org.account.cl.Permission;
-import org.account.cl.RelationService;
-import org.account.cl.Role;
-import org.account.cl.RolePermission;
+import org.account.cl.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -14,88 +12,92 @@ import java.util.List;
  */
 @Service
 public class RelationServiceImpl implements RelationService {
+
+    @Autowired
+    private RelationDao relationDao;
+
     @Override
     public boolean isExistPermissionInRelation(int permissionId) {
-        return false;
+        return relationDao.isExistPermissionInRelation(permissionId);
     }
 
     @Override
     public boolean isExistRoleInRelation(int roleId) {
-        return false;
+        return relationDao.isExistRoleInRelation(roleId);
     }
 
     @Override
     public boolean isExistUserInRelation(String username) {
-        return false;
+        return relationDao.isExistUserInRelation(username);
     }
 
     @Override
     public boolean unBindUserRelation(String username) {
-        return false;
+        return relationDao.unBindUserRelation(username);
     }
 
     @Override
     public boolean unBindUserRelation(String username, int roleId) {
-        return false;
+        return relationDao.unBindUserRelation(username, roleId);
     }
 
     @Override
     public boolean bindUserRelation(String username, int roleId) {
-        return false;
+        return relationDao.bindUserRelation(username, roleId);
     }
 
     @Override
     public boolean unBindRoleRelation(int roleId) {
-        return false;
+        return relationDao.unBindRoleRelation(roleId);
     }
 
     @Override
     public boolean unBindRoleRelation(int roleId, int permissionId) {
-        return false;
+        return relationDao.unBindRoleRelation(roleId, permissionId);
     }
 
     @Override
     public boolean bindRoleRelation(int roleId, int permissionId) {
-        return false;
+        return relationDao.bindRoleRelation(roleId, permissionId);
     }
 
     @Override
     public boolean delRoleRelation(int roleId) {
-        return false;
+        return relationDao.delRoleRelation(roleId);
     }
 
     @Override
     public boolean delPermissionRelation(int permissionId) {
-        return false;
+        return relationDao.delPermissionRelation(permissionId);
     }
 
     @Override
     public List<Role> getRoleByUser(String username) {
-        return null;
+        return relationDao.getRoleByUser(username);
     }
 
     @Override
     public List<Permission> getPermissionByUser(String username) {
-        return null;
+        return relationDao.getPermissionByUser(username);
     }
 
     @Override
     public List<Permission> getPermissionByUserAndPro(String projectName, String username) {
-        return Collections.emptyList();
+        return relationDao.getPermissionByUserAndPro(projectName, username);
     }
 
     @Override
     public List<Permission> getPermissionByRole(int roleId) {
-        return null;
+        return relationDao.getPermissionByRole(roleId);
     }
 
     @Override
     public List<RolePermission> gets() {
-        return null;
+        return relationDao.gets();
     }
 
     @Override
     public List<RolePermission> getsByCondition() {
-        return null;
+        return relationDao.getsByCondition();
     }
 }

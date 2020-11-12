@@ -28,9 +28,9 @@ import java.util.Set;
  * @author Administrator
  */
 @Configuration
-public class ApplicationConfig implements ApplicationContextAware, SmartInitializingSingleton {
+public class AdminConfig implements ApplicationContextAware, SmartInitializingSingleton {
 
-    private final static Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
+    private final static Logger logger = LoggerFactory.getLogger(AdminConfig.class);
 
     @Value("${spring.application.name}")
     private String projectName;
@@ -44,13 +44,6 @@ public class ApplicationConfig implements ApplicationContextAware, SmartInitiali
     public BCryptPasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    @ConfigurationProperties(prefix="mybatis.configuration")
-    public org.apache.ibatis.session.Configuration globalConfiguration() {
-        return new org.apache.ibatis.session.Configuration();
-    }
-
 
     /**
      * 所有的Bean加载完成后的回调

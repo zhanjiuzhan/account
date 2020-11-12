@@ -28,14 +28,13 @@ import java.util.Set;
  * @author Administrator
  */
 @Configuration
-public class ApplicationConfig implements ApplicationContextAware, SmartInitializingSingleton {
+public class UserConfig implements ApplicationContextAware, SmartInitializingSingleton {
 
-    private final static Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
+    private final static Logger logger = LoggerFactory.getLogger(UserConfig.class);
 
     @Value("${spring.application.name}")
     private String projectName;
 
-    @Autowired
     private PermissionService permissionService;
 
     private ApplicationContext context;
@@ -44,13 +43,6 @@ public class ApplicationConfig implements ApplicationContextAware, SmartInitiali
     public BCryptPasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    @ConfigurationProperties(prefix="mybatis.configuration")
-    public org.apache.ibatis.session.Configuration globalConfiguration() {
-        return new org.apache.ibatis.session.Configuration();
-    }
-
 
     /**
      * 所有的Bean加载完成后的回调
@@ -101,5 +93,8 @@ public class ApplicationConfig implements ApplicationContextAware, SmartInitiali
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;
+        if (this.permissionService == null) {
+            this.permissionService = this.context.getBean("permissionServiceImpl", PermissionService.class);
+        }
     }
 }

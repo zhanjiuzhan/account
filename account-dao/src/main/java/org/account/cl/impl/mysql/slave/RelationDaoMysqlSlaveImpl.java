@@ -38,7 +38,7 @@ public interface RelationDaoMysqlSlaveImpl {
      * @return
      */
     @Select("select count(username) from " + USER_ROLE + " where role_id = #{roleId} limit 1")
-    boolean isExistRoleInRelation(int roleId);
+    boolean isExistRoleInRelation1(int roleId);
 
     /**
      * 根据用户名 查询是否存在于 user_role
@@ -46,7 +46,7 @@ public interface RelationDaoMysqlSlaveImpl {
      * @return
      */
     @Select("select count(username) from " + USER_ROLE + " where username = #{username} limit 1")
-    boolean isExistUserInRelation(String username);
+    boolean isExistUserInRelation2(String username);
 
     /**
      * 根据用户名查询所有的角色信息 只取得对应的
@@ -70,7 +70,7 @@ public interface RelationDaoMysqlSlaveImpl {
      * @param username 用户名
      * @return
      */
-    @Select("select DISTINCT p.* from " + ROLE_PERMISSION + " rp LEFT JOIN " + PERMISSION + " p on rp.permission_id = p.id where FIND_IN_SET(rp.role_id, (select GROUP_CONCAT(role_id) from " + USER_ROLE + " where username=#{username}')) and p.project = #{projectName} order by p.update_date desc")
+    @Select("select DISTINCT p.* from " + ROLE_PERMISSION + " rp LEFT JOIN " + PERMISSION + " p on rp.permission_id = p.id where FIND_IN_SET(rp.role_id, (select GROUP_CONCAT(role_id) from " + USER_ROLE + " where username=#{username})) and p.project = #{projectName} order by p.update_date desc")
     List<Permission> getPermissionByUserAndPro(@Param("projectName") String projectName, @Param("username") String username);
 
     /**
