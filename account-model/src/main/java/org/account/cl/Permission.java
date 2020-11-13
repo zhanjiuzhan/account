@@ -51,6 +51,14 @@ public class Permission {
         this.updateDate = JcDateUtils.getToDay();
     }
 
+    public Permission() {}
+
+    public Permission(String project, String url, String method) {
+        this.project = project;
+        this.url = url;
+        this.method = method;
+    }
+
     public int getId() {
         return id;
     }

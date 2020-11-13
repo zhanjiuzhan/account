@@ -11,7 +11,7 @@ import javax.annotation.Resource;
  * @author Administrator
  */
 @Repository
-@ConditionalOnBean(name="adminApplication")
+@ConditionalOnBean(name="appApplication")
 public class UserDaoRedisImpl {
 
     private RedisUtils<String, String> redisString;
