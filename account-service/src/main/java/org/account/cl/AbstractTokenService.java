@@ -84,11 +84,14 @@ public abstract class AbstractTokenService {
 
         // authHeader
         authHeader = authHeader.replace(getTokenPrefix(), "");
+        return getUsernameByToken(authHeader);
+    }
 
+    public String getUsernameByToken(String token) {
         // 这个token是否正确 并且是否过期
         Claims claims = null;
         try {
-            claims = TokenUtils.getClaimByToken(authHeader, getKey());
+            claims = TokenUtils.getClaimByToken(token, getKey());
 
             if (claims == null || TokenUtils.isTokenExpired(claims.getExpiration())) {
                 return "";

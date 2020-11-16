@@ -1,5 +1,5 @@
 # 接口详细
-## /admin/login.do
+## /user/login.do
 **描述:** 用户登陆 取得Token  
 **请求类型:** POST  
 **请求头设置:** 

@@ -63,64 +63,72 @@ public class Permission {
         return id;
     }
 
-    public void setId(int id) {
+    public Permission setId(int id) {
         this.id = id;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public Permission setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Permission setName(String name) {
         this.name = name;
+        return this;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public Permission setStatus(int status) {
         this.status = status;
+        return this;
     }
 
     public String getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
+    public Permission setMethod(String method) {
         this.method = method;
+        return this;
     }
 
     public String getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(String updateDate) {
+    public Permission setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
+        return this;
     }
 
     public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public Permission setCreateDate(String createDate) {
         this.createDate = createDate;
+        return this;
     }
 
     public String getProject() {
         return project;
     }
 
-    public void setProject(String project) {
+    public Permission setProject(String project) {
         this.project = project;
+        return this;
     }
 
     @Override

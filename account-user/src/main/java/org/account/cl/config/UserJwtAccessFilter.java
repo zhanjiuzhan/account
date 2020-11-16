@@ -2,6 +2,7 @@ package org.account.cl.config;
 
 import com.alibaba.fastjson.JSON;
 import org.account.cl.ApplicationConst;
+import org.account.cl.JcSecurityUtils;
 import org.account.cl.impl.TokenServiceImpl;
 import org.account.cl.view.product.JsonView;
 import org.account.cl.view.product.RetUtils;
@@ -37,11 +38,29 @@ public class UserJwtAccessFilter extends OncePerRequestFilter {
     @Value("${spring.application.type}")
     private String applicationType;
 
+    /**
+     * persist-user 项目的key
+     */
+    private String PROJECT_USER_KEY = "shitupojie@liangxinhezai ";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(ApplicationConst.APP_ENV_WIN.equals(applicationType) || tokenService.isAuthentication(request)) {
+        // 本地测试不进行现行
+        end : if(ApplicationConst.APP_ENV_WIN.equals(applicationType)) {
             filterChain.doFilter(request, response);
         } else {
+            // 校验是否来源于远程调用
+            String url= request.getRequestURL().toString();
+            if (url.contains("/feign")) {
+                String time = request.getHeader("timesnap");
+                String project = request.getHeader("project");
+                String sign = request.getHeader("sign");
+                if (isValidSign(time, project, sign)) {
+                    filterChain.doFilter(request, response);
+                    break end;
+                }
+            }
+
             response.setContentType(RetUtils.CONTENT_TYPE_JSON);
             String res = JSON.toJSONString(new JsonView.JsonRet(403, "用户没有权限！"));
             try (Writer out = response.getWriter();) {
@@ -51,6 +70,15 @@ public class UserJwtAccessFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private boolean isValidSign(String time, String project, String sign) {
+        switch (project) {
+            case "persist-user":
+                return JcSecurityUtils.md5(time + PROJECT_USER_KEY + project).equals(sign);
+            default:
+                return false;
         }
     }
 }
