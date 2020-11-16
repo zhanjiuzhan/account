@@ -5,8 +5,11 @@ import org.account.cl.PermissionService;
 import org.account.cl.RelationService;
 import org.account.cl.exception.exception.ExceptionEnum;
 import org.account.cl.impl.TokenServiceImpl;
+import org.account.cl.reqlog.ControllerLog;
 import org.account.cl.view.JsonRetFactory;
 import org.account.cl.view.product.JsonView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +27,8 @@ import java.util.List;
 @RequestMapping("/feign")
 public class AccessController {
 
+    private Logger logger = LoggerFactory.getLogger(AccessController.class);
+
     @Autowired
     private PermissionService permissionService;
 
@@ -34,6 +39,7 @@ public class AccessController {
     private RelationService relationService;
 
     @PostMapping("/upPermissions.do")
+    @ControllerLog
     public JsonView upPermissions(@RequestBody List<Permission> permissions) {
         String projectName = "";
         for (Permission permission : permissions) {
@@ -63,6 +69,7 @@ public class AccessController {
      * @return
      */
     @GetMapping("/isLogin.do")
+    @ControllerLog
     public JsonView isLogin(String username, String token) {
         ExceptionEnum.INVALID_PARAMETER2.assertNotNull(username, "username必须是有效的");
         ExceptionEnum.INVALID_PARAMETER2.assertNotNull(token, "token必须是有效的");
@@ -83,6 +90,7 @@ public class AccessController {
      * @return
      */
     @GetMapping("/isPermission.do")
+    @ControllerLog
     public JsonView isPermission(String username, String token, String project, String url, String method) {
         ExceptionEnum.INVALID_PARAMETER2.assertNotNull(username, "username必须是有效的");
         ExceptionEnum.INVALID_PARAMETER2.assertNotNull(token, "token必须是有效的");
