@@ -4,7 +4,7 @@ server:
 spring:
   application:
     name: account-user
-    type: win1
+    type: win
   user-redis:
     database: 0
     host: localhost
